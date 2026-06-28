@@ -13,7 +13,7 @@
 
 #+TITLE: Estructura del Sistema de Memoria y Memoria Caché
 #+SUBTITLE: Arquitectura de Computadores · Stallings 11ª Ed. · Caps. 4–6
-#+AUTHOR: Grupo 4 — Arquitectura de Computadores
+#+AUTHOR: Grupo 3 — Arquitectura de Computadores
 #+DATE: Junio 2026
 #+OPTIONS: toc:nil num:nil timestamp:nil
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@4.5.0
@@ -49,7 +49,7 @@
   <tr>
     <td>🧑‍💻 Integrante 1<br/><strong style="color:#f0c040;">Rompehielo &amp; Localidad</strong></td>
     <td>📐 Integrante 2<br/><strong style="color:#7ecfff;">Características &amp; Jerarquía</strong></td>
-    <td>⚡ Integrante 3<br/><strong style="color:#a8e6cf;">Principios de Caché</strong></td>
+    <td> Integrante 3<br/><strong style="color:#a8e6cf;">Principios de Caché</strong></td>
     <td>🎯 Integrante 4<br/><strong style="color:#ff7675;">Políticas &amp; Reto</strong></td>
   </tr>
 </table>
@@ -96,10 +96,10 @@ la jerarquía de memoria y en la caché."  Pasar a la agenda.
   <div style="background:#131f30; border:2px solid #a8e6cf;
               border-radius:10px; padding:12px 18px; flex:1;
               min-width:160px; font-size:0.62em; text-align:left;">
-    <div style="font-size:1.7em;">⚡</div>
+    <div style="font-size:1.7em;"> </div>
     <div style="color:#a8e6cf; font-weight:700; font-size:1.1em;">FASE 3</div>
     <div style="color:#ddd;">Principios y Diseño<br/>de la Memoria Caché</div>
-    <div style="color:#888; font-size:0.85em; margin-top:4px;">~ 12 min</div>
+    <div style="color:#888; font-size:0.85em; margin-top:4px;"> </div>
   </div>
 
   <div style="background:#131f30; border:2px solid #ff7675;
@@ -832,7 +832,7 @@ POR DENTRO la memoria caché."
 # ============================================================
 #  ══════════════════════════════════════════════════════════
 #  FASE 3 — EL CORAZÓN DE LA CACHÉ
-#  Integrante 3  |  Stallings 11ª Ed. pp. 161–186
+#  Molina Jhanavi  |  Stallings 11ª Ed. pp. 161–186
 #  ══════════════════════════════════════════════════════════
 # ============================================================
 
@@ -848,17 +848,13 @@ POR DENTRO la memoria caché."
     El Corazón de la Caché
   </h2>
   <p style="color:#ddd; font-size:0.75em;">
-    Principios · Estructura · Funciones de Mapeo
+    Principios, Estructura, Funciones de Mapeo
   </p>
   <p class="integrante">Integrante 3 · Stallings Cap. 5, pp. 161–186</p>
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 3 — PORTADA FASE 3 (10 s)
-Presentarse y decir: "Ahora vamos a abrir la caja negra. ¿Cómo
-sabe la caché qué guardar y cómo se organiza internamente?"
-#+END_NOTES
+
 
 # ============================================================
 #  DIAPOSITIVA 16 — ¿QUÉ ES LA CACHÉ?
@@ -873,8 +869,8 @@ sabe la caché qué guardar y cómo se organiza internamente?"
 <div class="concepto-box" style="margin-bottom:12px;">
   <strong>Definición (Stallings, p. 161):</strong><br/>
   La caché está diseñada para combinar el tiempo de acceso de la
-  memoria rápida (cara) con la <em>gran capacidad</em> de la memoria
-  lenta (barata). Contiene una <strong>copia de porciones</strong>
+  memoria rápida con la gran capacidad de la memoria
+  lenta, contiene una <strong>copia de porciones</strong>
   de la memoria principal.
 </div>
 #+END_EXPORT
@@ -886,10 +882,11 @@ sabe la caché qué guardar y cómo se organiza internamente?"
 
 #+ATTR_REVEAL: :frag (appear appear appear appear)
 *Terminología esencial:*
-- *Bloque* (Block): unidad mínima de transferencia caché↔RAM
-- *Línea* (Line): espacio en caché que aloja un bloque + control
-- *Etiqueta* (Tag): identifica qué bloque de RAM está en la línea
-- *Acierto / Fallo* (Hit / Miss): dato encontrado o no en caché
+- *Bloque* (Block): Grupo de datos que llega desde la RAM
+- *Línea* (Line): Espacio en caché que aloja un bloque + control
+- *Etiqueta* (Tag): Identifica qué bloque de RAM está en la línea
+- *Acierto / Fallo* (Hit / Miss): El Hit es el dato que si está en caché y Miss el dato
+  que no está en caché
 
 #+BEGIN_EXPORT html
 </div>
@@ -899,10 +896,13 @@ sabe la caché qué guardar y cómo se organiza internamente?"
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
 <div class="media-placeholder" style="margin:0;">
-  <div class="icon">🎬</div>
-  <strong>Diagrama: Fig. 5.2 (Stallings p. 162)</strong><br/>
-  Estructura Caché / Memoria Principal<br/>
-  <span style="color:#888;">Mostrar figura del libro aquí</span>
+  <img src="estructura_cache.jpg"
+       style="width:90%;
+              border-radius:10px;
+	      box-shadow: 0 0 10px rgba(0,0,0,.35);">
+  <p style="font-size:16px; margin-top:8px;">
+     Organización básica de la memoria caché
+  </p>
 </div>
 #+END_EXPORT
 
