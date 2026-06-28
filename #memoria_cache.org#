@@ -19,7 +19,7 @@
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@4.5.0
 #+REVEAL_THEME: night
 #+REVEAL_TRANS: convex
-#+REVEAL_SPEED: default
+#+REVEAL_SPEED: default@
 #+REVEAL_PLUGINS: (highlight notes zoom search)
 #+REVEAL_INIT_OPTIONS: slideNumber: 'c/t', progress: true, history: true, center: true, touch: true, hash: true, controlsLayout: 'bottom-right', backgroundTransition: 'fade', defaultTiming: 120, totalTime: 2400
 #+REVEAL_EXTRA_CSS: ./custom.css
@@ -911,19 +911,6 @@ POR DENTRO la memoria caché."
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 3 — ~2 min
-Explicar cada término con gestos:
-- Bloque: "Si tu escritorio tiene carpetas, el bloque es como
-  una carpeta completa — no traes una sola hoja, traes la carpeta."
-- Línea: "El espacio físico en el escritorio donde cabe una carpeta."
-- Tag: "La etiqueta que dice 'esta carpeta es la del Proyecto A
-  del Archivero'."
-- Hit/Miss: "¿Encontré lo que buscaba en el escritorio? HIT.
-  ¿No? MISS — voy al archivero."
-Mostrar/señalar la Fig. 5.2 del libro si se tiene disponible.
-#+END_NOTES
-
 # ============================================================
 #  DIAPOSITIVA 17 — OPERACIÓN DE LECTURA
 # ============================================================
@@ -945,12 +932,12 @@ Mostrar/señalar la Fig. 5.2 del libro si se tiene disponible.
 #+END_EXPORT
 
 #+ATTR_REVEAL: :frag (appear appear appear appear appear appear)
-1. CPU genera dirección *RA* de lectura
+1. CPU genera una dirección de memoria 
 2. ¿Está el bloque que contiene *RA* en caché?
 3. *SÍ → HIT:* entregar palabra a CPU directamente (~1 ns)
 4. *NO → MISS:* acceder a memoria principal (~60 ns)
 5. Cargar el bloque completo en una línea de caché
-6. Entregar la palabra pedida al CPU (en paralelo si es posible)
+6. Entregar primero la palabra solicitada *Critical Word First*
 
 #+BEGIN_EXPORT html
 </div>
@@ -959,14 +946,11 @@ Mostrar/señalar la Fig. 5.2 del libro si se tiene disponible.
 
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
-<div class="media-placeholder">
-  <div class="icon">📽️</div>
-  <strong>#+CAPTION: [Insertar GIF: bloque viajando de RAM a caché]</strong><br/>
-  <span style="color:#888; font-size:0.85em;">
-    Reemplazar con GIF animado mostrando<br/>
-    el bloque transfiriéndose de RAM a caché<br/>
-    y luego la palabra al CPU
-  </span>
+<div class="media-placeholder" style="margin:0; text-align:center;">
+  <img src="img/Critical_wordfirst.png"
+       style="width:90%;
+              border-radius:10px;
+	      box-shadow:0 0 10px rgba(0,0,0,.35);">
 </div>
 #+END_EXPORT
 
