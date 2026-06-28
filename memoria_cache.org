@@ -911,19 +911,6 @@ POR DENTRO la memoria caché."
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 3 — ~2 min
-Explicar cada término con gestos:
-- Bloque: "Si tu escritorio tiene carpetas, el bloque es como
-  una carpeta completa — no traes una sola hoja, traes la carpeta."
-- Línea: "El espacio físico en el escritorio donde cabe una carpeta."
-- Tag: "La etiqueta que dice 'esta carpeta es la del Proyecto A
-  del Archivero'."
-- Hit/Miss: "¿Encontré lo que buscaba en el escritorio? HIT.
-  ¿No? MISS — voy al archivero."
-Mostrar/señalar la Fig. 5.2 del libro si se tiene disponible.
-#+END_NOTES
-
 # ============================================================
 #  DIAPOSITIVA 17 — OPERACIÓN DE LECTURA
 # ============================================================
@@ -981,20 +968,6 @@ Mostrar/señalar la Fig. 5.2 del libro si se tiene disponible.
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 3 — ~2 min
-Narrar el flujo como una historia:
-"El CPU dice: quiero el byte en la dirección 0x1A3C.
-Primero pregunta a la caché: ¿lo tienes? Si sí, HIT, listo en 1 ns.
-Si no, MISS: va a la RAM, carga un bloque de 64 bytes (no solo 1),
-lo pone en una línea de caché, y le da la palabra al CPU."
-Enfatizar el Critical Word First: "Para no hacer esperar al CPU,
-el sistema entrega PRIMERO la palabra que se pidió, y mientras el
-CPU sigue trabajando, se termina de cargar el resto del bloque."
-Apuntar al placeholder del GIF y decir: "Aquí van a ver el
-diagrama animado de cómo viaja el bloque" (si tienen el GIF preparado).
-#+END_NOTES
-
 # ============================================================
 #  DIAPOSITIVA 18 — MAPEO DIRECTO
 # ============================================================
@@ -1028,43 +1001,27 @@ diagrama animado de cómo viaja el bloque" (si tienen el GIF preparado).
 </p>
 <div class="addr-bar">
   <div class="tag"    style="flex:4;">
-    TAG<br/><span class="label">8 bits (s−r)</span>
+    TAG<br/><span class="label">8 bits</span>
   </div>
   <div class="line"   style="flex:7;">
-    NÚMERO DE LÍNEA<br/><span class="label">14 bits (r)</span>
+    NÚMERO DE LÍNEA<br/><span class="label">14 bits</span>
   </div>
-  <div class="word"   style="flex:1;">
-    OFFSET<br/><span class="label">2 bits (w)</span>
+  <div class="word"   style="flex:5;">
+    PALABRA<br/><span class="label">10 bits</span>
   </div>
 </div>
 #+END_EXPORT
 
 #+ATTR_REVEAL: :frag (appear appear appear)
 *Ventajas y desventajas:*
-- ✅ Implementación *simple y económica* — hardware minimal
-- ✅ Búsqueda *muy rápida* (una sola línea a verificar)
-- ❌ *Thrashing*: dos bloques que mapean a la misma línea se expulsan mutuamente aunque haya espacio libre
-
-#+BEGIN_NOTES
-INTEGRANTE 3 — ~2.5 min
-Explicar la regla con un ejemplo concreto:
-"Si la caché tiene 16K líneas (m = 16384), el bloque 0 de RAM va
-a la línea 0, el bloque 1 a la línea 1... el bloque 16384 también
-va a la línea 0, el 16385 a la línea 1, etc."
-Para la dirección de 24 bits:
-"Los 2 bits menos significativos dicen qué byte DENTRO del bloque.
-Los 14 del medio dicen a QUÉ LÍNEA del caché. Los 8 más significativos
-son el TAG que identifica cuál de los 256 bloques posibles está ahí."
-El thrashing: "Imagina que accedo alternadamente al bloque 0 y
-al bloque 16384. Ambos van a la línea 0. Cada acceso expulsa al otro.
-Hit ratio = 0%. Eso es thrashing."
-Mostrar la Fig. 5.7 del libro si está disponible.
-#+END_NOTES
+- Implementación *simple y económica*
+- Búsqueda *muy rápida* - una sola línea a verificar
+- *Thrashing*: dos bloques que mapean a la misma línea se expulsan mutuamente aunque haya espacio libre
 
 # ============================================================
 #  DIAPOSITIVA 19 — MAPEO ASOCIATIVO
 # ============================================================
-* Función de Mapeo Asociativo (Totalmente Asociativo)
+* Función de Mapeo Asociativo - Totalmente Asociativo
 :PROPERTIES:
 :reveal_background: #0a0f1e
 :END:
@@ -1080,9 +1037,9 @@ Mostrar la Fig. 5.7 del libro si está disponible.
 #+BEGIN_EXPORT html
 <div class="concepto-box" style="margin-bottom:10px; font-size:0.75em;">
   <strong>Regla:</strong> Cualquier bloque de RAM puede ir a
-  <em>cualquier línea</em> de la caché.<br/>
-  La búsqueda compara el TAG <strong>simultáneamente contra
-  todas las líneas</strong> usando memoria CAM.
+  <em>cualquier línea</em> de la caché,<br/>
+  la búsqueda compara el TAG simultáneamente contra
+  todas las líneas  usando memoria CAM.
 </div>
 #+END_EXPORT
 
@@ -1093,33 +1050,19 @@ Mostrar la Fig. 5.7 del libro si está disponible.
 </p>
 <div class="addr-bar">
   <div class="tag"  style="flex:11;">
-    TAG<br/><span class="label">22 bits (s bits)</span>
+    TAG<br/><span class="label">22 bits</span>
   </div>
-  <div class="word" style="flex:1;">
-    OFFSET<br/><span class="label">2 bits (w)</span>
+  <div class="word" style="flex:7;">
+    PALABRA<br/><span class="label">10 bits</span>
   </div>
 </div>
 #+END_EXPORT
 
 #+ATTR_REVEAL: :frag (appear appear appear)
 *Ventajas y desventajas:*
-- ✅ *Elimina el thrashing* — total libertad de colocación
-- ✅ Mayor hit ratio con el mismo tamaño de caché
-- ❌ *Hardware caro y complejo* — necesita CAM para búsqueda en paralelo
-
-#+BEGIN_NOTES
-INTEGRANTE 3 — ~2 min
-"En el mapeo asociativo, el Tag es casi toda la dirección (22 bits).
-No hay campo de número de línea porque el bloque puede estar
-EN CUALQUIER línea. Para encontrarlo, el hardware compara el Tag
-contra TODAS las líneas simultáneamente usando memoria CAM
-(Content-Addressable Memory)."
-Preguntar: "¿Cuántas comparaciones hace el mapeo directo?
-¡Solo una! ¿Y el asociativo? ¡Todas las líneas al mismo tiempo!"
-Explicar el CAM (Stallings p. 171): "Como si 16.000 personas
-buscan su nombre en una lista al mismo tiempo — un solo ciclo."
-"+Flexible − Caro. Este es el trade-off."
-#+END_NOTES
+- *Elimina el thrashing*: total libertad de colocación
+- Mayor hit ratio con el mismo tamaño de caché
+- Hardware caro y complejo* : se necesita CAM para búsqueda en paralelo
 
 # ============================================================
 #  DIAPOSITIVA 20 — MAPEO ASOCIATIVO POR CONJUNTOS
@@ -1141,10 +1084,8 @@ buscan su nombre en una lista al mismo tiempo — un solo ciclo."
 <div class="concepto-box" style="margin-bottom:8px; font-size:0.72em;">
   <strong>Regla:</strong> La caché se divide en <code>v</code>
   <em>conjuntos (sets)</em>, cada uno con <code>k</code> líneas
-  (<em>vías / ways</em>). Un bloque mapea a un conjunto fijo
+  (<em>vías</em>), un bloque mapea a un conjunto fijo
   pero puede ir a <em>cualquier línea</em> dentro del conjunto.<br/>
-  Fórmula: <code>conjunto = bloque mod v</code>
-  &nbsp;|&nbsp; m = v × k
 </div>
 #+END_EXPORT
 
@@ -1155,13 +1096,13 @@ buscan su nombre en una lista al mismo tiempo — un solo ciclo."
 </p>
 <div class="addr-bar">
   <div class="tag"  style="flex:4;">
-    TAG<br/><span class="label">9 bits (s−d)</span>
+    TAG<br/><span class="label">9 bits</span>
   </div>
   <div class="set"  style="flex:6;">
-    NÚMERO DE CONJUNTO<br/><span class="label">13 bits (d)</span>
+    NÚMERO DE CONJUNTO<br/><span class="label">13 bits</span>
   </div>
-  <div class="word" style="flex:1;">
-    OFFSET<br/><span class="label">2 bits (w)</span>
+  <div class="word" style="flex:3;">
+    PALABRA<br/><span class="label">10 bits</span>
   </div>
 </div>
 #+END_EXPORT
@@ -1170,37 +1111,21 @@ buscan su nombre en una lista al mismo tiempo — un solo ciclo."
 #+BEGIN_EXPORT html
 <div class="col2" style="font-size:0.62em; margin-top:8px;">
 <div class="concepto-box">
-  <strong>2-way (k=2)</strong>: El más común.
-  Mejora <em>significativamente</em> el hit ratio vs. directo.
-  Con v = m/2 conjuntos.
+  <strong>2-way (k=2)</strong>: El más común,
+  mejora <em>significativamente</em> el hit ratio vs directo.
 </div>
 <div class="concepto-box">
-  <strong>4-way (k=4)</strong>: Mejora modesta adicional.
-  Costo más alto. Retorno disminuyente.
+  <strong>4-way (k=4)</strong>: Mejora modesta adicional,
+  costo más alto, retorno disminuyente.
   (Stallings p. 180, Fig. 5.15)
 </div>
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 3 — ~2.5 min
-"El asociativo por conjuntos es el mejor de ambos mundos.
-Imagina que la caché es una librería con 8192 estantes (conjuntos),
-cada estante con 2 espacios (2-way). Un libro siempre va al mismo
-estante, pero puede ocupar cualquiera de los 2 espacios."
-Proceso de búsqueda:
-1. "El campo Set dice: ve al conjunto número X."
-2. "Dentro de ese conjunto, compara el Tag contra las k líneas."
-3. "Si hay match en alguna → HIT. Si no → MISS."
-La Fig. 5.15 de Stallings muestra que más de 4-way casi no mejora.
-"¿Por qué la industria usa 4-way o 8-way? Porque más vías = más
-transistores = más área y consumo."
-#+END_NOTES
-
 # ============================================================
-#  DIAPOSITIVA 21 — COMPARATIVA DE MAPEOS
+#  DIAPOSITIVA 21 — TABLA COMPARATIVA DE MÉTODOS DE MAPEO
 # ============================================================
-* Comparativa: Las Tres Funciones de Mapeo
+* Las Tres Funciones de Mapeo
 :PROPERTIES:
 :reveal_background: #0a0f1e
 :END:
@@ -1210,42 +1135,36 @@ transistores = más área y consumo."
 <table class="mapeo-table">
 <thead>
   <tr>
-    <th>Criterio</th>
-    <th>🔵 Directo</th>
-    <th>🔴 Asociativo</th>
-    <th>🟢 Asoc. por Conjuntos</th>
+    <th>Características</th>
+    <th>Mapeo Directo</th>
+    <th>Mapeo Asociativo</th>
+    <th>Asoc. por Conjuntos</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td>Libertad de colocación</td>
-    <td class="worst">Mínima (1 línea)</td>
-    <td class="best">Máxima (todas)</td>
-    <td class="mid">Media (k líneas)</td>
+    <td>Flexibilidad</td>
+    <td class="worst">Línea fija</td>
+    <td class="best">Cualquier línea</td>
+    <td class="mid">Cualquier línea del conjunto</td>
   </tr>
   <tr>
-    <td>Hit ratio (mismo tamaño)</td>
-    <td class="worst">Bajo (thrashing)</td>
-    <td class="best">Máximo</td>
-    <td class="mid">Alto (≈ asociativo)</td>
+    <td>Riesgo de Thrashing</td>
+    <td class="worst">Alto</td>
+    <td class="best">Nulo</td>
+    <td class="mid">Muy bajo</td>
   </tr>
   <tr>
-    <td>Complejidad hardware</td>
-    <td class="best">Baja (sin CAM)</td>
-    <td class="worst">Alta (CAM completa)</td>
-    <td class="mid">Media (k comparadores)</td>
+    <td>Costo de Hardware</td>
+    <td class="best">Muy bajo (Simple)</td>
+    <td class="worst">Muy alto (Memoria CAM)</td>
+    <td class="mid">Equilibrado</td>
   </tr>
   <tr>
-    <td>Velocidad de búsqueda</td>
-    <td class="best">Más rápida</td>
-    <td class="mid">Rápida (paralela)</td>
-    <td class="mid">Rápida (k líneas)</td>
-  </tr>
-  <tr>
-    <td>Uso en procesadores reales</td>
-    <td class="mid">L1 simple / antiguo</td>
-    <td class="worst">TLB (pequeños)</td>
-    <td class="best">L1, L2, L3 modernos</td>
+    <td>Uso en el mundo real</td>
+    <td class="mid">Cachés L3 muy grandes</td>
+    <td class="worst">Cachés muy pequeñas</td>
+    <td class="best">Estándar de la industria</td>
   </tr>
   <tr>
     <td>Ejemplo (Stallings Tab. 5.2)</td>
@@ -1260,25 +1179,11 @@ transistores = más área y consumo."
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
 <div class="concepto-box warn" style="font-size:0.65em; margin-top:8px;">
-  💡 Regla práctica: <strong>2-way set-associative</strong> es el
-  mínimo recomendado. <strong>4-way</strong> es el punto óptimo
-  costo/beneficio para L1. L3 usa frecuentemente 16-way o más.
+  Conclusión:<strong>2-way set-associative</strong> es el
+  mínimo recomendado,<strong>4-way</strong> es el punto óptimo
+  costo/beneficio para L1, L3 usa frecuentemente 16-way o más.
 </div>
 #+END_EXPORT
-
-#+BEGIN_NOTES
-INTEGRANTE 3 — ~2 min
-Recorrer la tabla enfatizando la fila de "Hit ratio":
-"Directo tiene el problema del thrashing. Asociativo lo elimina.
-Por conjuntos logra casi lo mismo que asociativo pero con hardware
-mucho más barato."
-Dar ejemplos reales de la Tabla 5.2 (Stallings p. 167):
-- Intel 80486 (1989): L1 8kB, 4-way
-- Pentium 4 (2000): L1 16kB 4-way, L2 512kB 8-way
-- IBM z13 (2015): L1 96/128kB, L3 64MB 16-way, L4 480MB 30-way
-CIERRE FASE 3: "Ahora [Nombre 4] completa el cuadro con las
-políticas de escritura y nos reta con un problema real."
-#+END_NOTES
 
 # ============================================================
 #  ══════════════════════════════════════════════════════════
