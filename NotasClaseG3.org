@@ -272,7 +272,7 @@ rendimiento real (Stallings).
 
 ** Resumen (Summary):
 Existen tres métodos para decidir dónde guarda la caché un bloque de
-RAM. El *Mapeo Directo* asigna a cada bloque una única línea posible
+RAM, el *Mapeo Directo* asigna a cada bloque una única línea posible
 mediante el residuo de la división, es barato pero sufre Thrashing
 cuando dos bloques compiten por el mismo espacio, el *Mapeo Asociativo
 Puro* permite guardar cualquier bloque en cualquier línea libre,
