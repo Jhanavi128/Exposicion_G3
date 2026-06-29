@@ -1,0 +1,511 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil expand-links:t f:t
+#+options: inline:t num:t p:nil pri:nil prop:nil stat:t tags:t
+#+options: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+title: Notas de Clase — Estructura del Sistema de Memoria y Memoria Caché
+#+date: 2026-06-27
+#+author: Grupo 4
+#+email: grupo4@epn.edu.ec
+#+language: Español
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 27.1 (Org mode 9.7.5)
+#+cite_export: biblatex
+
+#+latex_class: article
+#+latex_class_options:
+#+latex_header:
+#+latex_header_extra:
+#+description: Notas Cornell — Arquitectura de Computadores
+#+keywords: caché, jerarquía de memoria, localidad, mapeo, política de escritura
+#+subtitle: Sistema de Notas Cornell · Stallings 11ª Ed. Caps. 4–6
+#+latex_footnote_command: \footnote{%s%s}
+#+latex_engraved_theme:
+#+latex_compiler: pdflatex
+
+#+latex_header: \usepackage{fancyhdr}
+#+latex_header: \usepackage[top=25mm, left=25mm, right=25mm]{geometry}
+#+latex_header: \usepackage{longtable}
+#+latex_header: \fancyhead[R]{}
+#+latex_header: \setlength\headheight{43.0pt}
+
+#+bibliography: bibliography.bib
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[spanish]{babel}
+#+LATEX_HEADER: \usepackage[backend=biber,style=ieee]{biblatex}
+
+
+#+begin_export latex
+\fancyhead[C]{\includegraphics[scale=0.05]{./logoEPN.jpg}\\
+ESCUELA POLITÉCNICA NACIONAL\\FACULTAD DE INGENIERÍA DE SISTEMAS\\
+ARQUITECTURA DE COMPUTADORES}
+\thispagestyle{fancy}
+#+end_export
+
+
+#+begin_comment
+Notas tomadas bajo el sistema Cornell de la Universidad de Cornell.
+Estructura por sección:
+  ** Preguntas y Términos clave (Cue)  ← columna izquierda
+  ** Notas (Notes)                     ← cuerpo principal
+  ** Resumen (Summary)                 ← banda inferior
+
+Referencias bibliográficas:
+  \textcite{stallings2022computer} — Computer Organization and
+  Architecture, 11ª Ed., 2022. Caps. 4 (pp. 134–159) y 5 (pp. 160–198).
+#+end_comment
+
+
+* 2026-06-27 Principio de Localidad de Referencia
+** Preguntas y Términos clave (Cue):
+- ¿Qué es el principio de localidad? ::
+- Localidad temporal ::
+- Localidad espacial ::
+- ¿Por qué los programas exhiben localidad? ::
+- ¿Cómo explota la caché cada tipo de localidad? ::
+- Denning (1972) ::
+- instrucción estática vs. dinámica ::
+- prefetching ::
+
+** Notas (Notes):
+- *Principio de Localidad de Referencia* [Stallings, p. 135]:
+  Durante la ejecución de un programa, las referencias a memoria
+  por el procesador —instrucciones y datos— tienden a agruparse
+  (clustering). No todas las posiciones de memoria son igual de
+  probables en un momento dado.
+- Denning (1972) formuló tres afirmaciones formales [Stallings, p. 136]:
+  1. Las referencias son *no uniformes*: algunas posiciones son mucho
+     más accedidas que otras.
+  2. La distribución de probabilidad de referencias cambia *lentamente*
+     con el tiempo.
+  3. Hay *alta correlación* entre el pasado inmediato y el futuro
+     inmediato; la correlación decrece al aumentar el intervalo de tiempo.
+- ¿Por qué ocurre? Razones estructurales de los programas:
+  - La ejecución es mayormente *secuencial* (excepto saltos y llamadas).
+  - Los programas permanecen en una *ventana estrecha* de profundidad de
+    invocación de procedimientos.
+  - Los bucles iterativos repiten un conjunto pequeño de instrucciones.
+  - El procesamiento de estructuras de datos (arrays, listas) accede a
+    posiciones contiguas.
+- *Localidad Temporal* [Stallings, p. 136]:
+  - Definición :: Si la posición $x$ fue accedida en el tiempo $t$, es
+    probable que vuelva a ser accedida en un tiempo cercano a $t$.
+  - Ejemplos: variable de contador en un bucle ~for~, constantes,
+    pilas de trabajo, subrutinas llamadas repetidamente.
+  - Explotación en caché :: Mantener instrucciones y datos *recientemente
+    usados* en caché; usar jerarquía de múltiples niveles (L1→L2→L3).
+- *Localidad Espacial* [Stallings, p. 136]:
+  - Definición :: Si la posición $x$ es accedida en $t$, es probable que
+    las posiciones $x-k$ a $x+k$ sean accedidas pronto (k pequeño).
+  - Ejemplos: acceso secuencial a arrays, fetch de instrucciones
+    consecutivas, registros de estructuras de datos.
+  - Explotación en caché :: Transferir *bloques completos* (no palabras
+    sueltas); usar *prefetching* (precarga anticipada de bloques).
+- Distinción estática vs. dinámica [Stallings, p. 139]:
+  - Instrucción *estática* :: una instrucción que existe en el código.
+  - Instrucción *dinámica* :: aparición de esa instrucción en la traza
+    de ejecución (puede ocurrir 0 o miles de veces).
+  - La Fig. 4.5 (Stallings p. 140) muestra que pocas subrutinas
+    concentran la gran mayoría de las instrucciones dinámicas →
+    fuerte localidad de instrucciones.
+- Analogía del Escritorio [Stallings, p. 137, Fig. 4.1]:
+  - Escritorio (~5 carpetas) \rightarrow Caché
+  - Archivero en la sala siguiente (~500 carpetas) \rightarrow RAM
+  - Biblioteca externa (miles) \rightarrow Disco
+  - Retener lo que ya usé \rightarrow localidad temporal
+  - Traer carpetas vecinas al ir al archivero \rightarrow localidad espacial
+- TODO :: Revisar Fig. 4.2 y Fig. 4.3 (Stallings) sobre distribuciones
+  de probabilidad de localidad temporal y espacial.
+
+** Resumen (Summary):
+El principio de localidad de referencia establece que los programas
+acceden a la memoria de manera no uniforme y predecible: tienden a
+reutilizar las mismas posiciones (/localidad temporal/) y a acceder a
+posiciones contiguas (/localidad espacial/). Esto ocurre por la naturaleza
+secuencial de la ejecución, los bucles iterativos y el acceso a
+estructuras de datos. Sin este principio, la jerarquía de memoria
+(y la caché) no tendría ninguna utilidad práctica.
+
+
+* 2026-06-27 Características de los Sistemas de Memoria y Jerarquía
+** Preguntas y Términos clave (Cue):
+- Clasificación de la memoria [Tabla 4.1] ::
+- Memoria interna vs. externa ::
+- ¿Qué es la unidad de transferencia? ::
+- Métodos de acceso ::
+- Tiempo de acceso $T_A$ vs. tiempo de ciclo $T_C$ ::
+- Tasa de transferencia $R$ ::
+- Fórmula del tiempo de acceso promedio ::
+- Hit Ratio $H$ ::
+- Hit vs. Miss ::
+- Principios de diseño de la jerarquía ::
+- Principio de Inclusión ::
+- Coherencia vertical vs. horizontal ::
+- Fórmula multinivel (Ec. 4.5) ::
+- IBM z13 ::
+
+** Notas (Notes):
+- *Dimensiones de clasificación* de la memoria [Stallings, Tabla 4.1, p. 141]:
+  - Ubicación: Interna (registros, caché, RAM) / Externa (disco, cinta)
+  - Capacidad: en palabras o bytes (interna); en GB/TB (externa)
+  - Unidad de transferencia: palabra (interna) / bloque o sector (externa)
+  - Método de acceso: secuencial, directo, aleatorio, asociativo
+  - Rendimiento: $T_A$, $T_C$, $R$
+  - Tipo físico: semiconductor, magnético, óptico, magneto-óptico
+  - Características físicas: volátil/no volátil, borrable/no borrable
+
+- *Métodos de acceso* [Stallings, pp. 141–142]:
+  - Secuencial :: acceso lineal obligatorio; tiempo variable;
+    ejemplo: cinta magnética.
+  - Directo :: cabezal va a vecindad y luego busca;
+    tiempo variable; ejemplo: disco duro HDD.
+  - Aleatorio :: cada posición tiene mecanismo propio; tiempo
+    *constante* e independiente de accesos anteriores;
+    ejemplo: RAM, caché.
+  - Asociativo :: acceso por *contenido*, no por dirección;
+    tiempo constante; ejemplo: caché asociativa (CAM).
+
+- *Parámetros de rendimiento* [Stallings, pp. 142–143]:
+  - Tiempo de Acceso ($T_A$) :: tiempo desde que se presenta la dirección
+    hasta que el dato está disponible.
+  - Tiempo de Ciclo ($T_C$) :: $T_A$ más tiempo adicional para que
+    cesen transitorios o se regeneren datos; $T_C \geq T_A$.
+    En DRAM la lectura es destructiva \rightarrow debe reescribirse.
+  - Tasa de Transferencia ($R$):
+    - Para RAM: $R = 1 / T_C$
+    - Para no-RAM (Ec. 4.1): $T_n = T_A + n/R$
+      donde $n$ = bits a transferir.
+
+- *Jerarquía de Memoria* [Stallings, p. 144, Fig. 4.6]:
+  Al bajar en la jerarquía (nivel $i$ \rightarrow $i+1$):
+  - Decrece el costo por bit ($C_i > C_{i+1}$)
+  - Aumenta la capacidad ($S_i < S_{i+1}$)
+  - Aumenta el tiempo de acceso ($T_i < T_{i+1}$)
+  - Decrece la frecuencia de acceso del procesador
+  Niveles típicos (de más rápido a más lento):
+  | Nivel              | Tecnología       | Tiempo aprox. | Tamaño típico |
+  |--------------------+------------------+---------------+---------------|
+  | Registros CPU      | CMOS             | ~0.3 ns       | bytes         |
+  | Caché L1           | SRAM             | ~1 ns         | 32–512 kB     |
+  | Caché L2 / L3      | SRAM / eDRAM     | ~3–30 ns      | MB            |
+  | Memoria principal  | DRAM             | ~60–100 ns    | GB            |
+  | Flash / SSD        | NAND Flash       | ~50–150 \mu{}s   | TB            |
+  | Disco magnético    | Superficie magn. | ~5–10 ms      | TB            |
+  | Cinta (offline)    | Superficie magn. | segundos/min  | PB            |
+
+- *Fórmula del tiempo de acceso promedio* — dos niveles [Stallings, Ec. 4.2, p. 151]:
+  \[ T_s = H \cdot T_1 + (1 - H)(T_1 + T_2) = T_1 + (1-H) \cdot T_2 \]
+  donde $H$ = hit ratio (fracción de accesos encontrados en nivel 1).
+  - Si $H = 0.95$, $T_1 = 0.01\,\mu\text{s}$, $T_2 = 0.1\,\mu\text{s}$:
+    $T_s = 0.01 + (0.05)(0.1) = 0.015\,\mu\text{s}$ \rightarrow muy cerca del nivel 1.
+  - Para buen rendimiento se necesita $H \approx 0.9$ o mayor.
+
+- *Fórmula de acceso multinivel* [Stallings, Ec. 4.5, p. 156]:
+  \[ T_s = \sum_{i=1}^{n} \left[\prod_{j=0}^{i-1}(1-h_j)\right] \cdot h_i \cdot t_i \]
+  donde $h_i$ = probabilidad condicional de que el dato esté en $M_i$
+  dado que no está en $M_{i-1}$; $h_0 = 0$.
+
+- *Principios de diseño de la jerarquía* [Stallings, pp. 149–150]:
+  1. *Localidad* :: la jerarquía solo funciona si hay localidad de referencia.
+  2. *Inclusión* :: $M_i \subseteq M_{i+1}$. Los datos se *copian* (no se
+     mueven); si un dato está en $M_i$, también existe en $M_{i+1}, \ldots, M_n$.
+  3. *Coherencia*:
+     - Vertical :: si un núcleo modifica un bloque en L2, debe
+       actualizarse en L3 antes de que otro L2 lo recupere.
+     - Horizontal :: si dos L2 comparten el mismo L3 y tienen copias
+       del mismo bloque, al modificar uno el otro queda obsoleto.
+
+- *IBM z13 — Jerarquía real* [Stallings, pp. 148–149, Fig. 4.10]:
+  - L1 I-cache: 96 kB SRAM (privada por núcleo)
+  - L1 D-cache: 128 kB SRAM (privada por núcleo)
+  - L2: 2 MB SRAM I + 2 MB SRAM D (privada por núcleo)
+  - L3: 64 MB eDRAM (compartida por 8 núcleos en el chip PU)
+  - L4: 480 MB eDRAM (compartida por los 3 chips PU de un nodo)
+  - RAM principal: hasta 2,5 TB DRAM por cajón; hasta 10 TB por CPC.
+
+** Resumen (Summary):
+Los sistemas de memoria se clasifican por ubicación, capacidad, método de
+acceso y rendimiento. El acceso aleatorio (RAM, caché) tiene tiempo
+constante; el secuencial y directo (cinta, disco) tienen tiempo variable.
+La jerarquía balancea velocidad, costo y capacidad: los niveles superiores
+son más rápidos, más costosos y más pequeños. El tiempo de acceso promedio
+sigue la fórmula $T_s = T_1 + (1-H) \cdot T_2$; con $H \geq 0.9$ el
+sistema se comporta casi como el nivel más rápido. Los principios de
+localidad, inclusión y coherencia guían el diseño de toda la jerarquía.
+
+
+* 2026-06-27 Principios y Diseño de la Memoria Caché
+** Preguntas y Términos clave (Cue):
+- ¿Qué es un bloque de caché? ::
+- Diferencia entre línea y bloque ::
+- ¿Qué es el tag (etiqueta)? ::
+- Operación de lectura (hit vs. miss) ::
+- Critical Word First ::
+- Tamaño de caché ideal ::
+- Mapeo directo: fórmula y campos ::
+- Thrashing ::
+- CAM (Memoria Asociativa) ::
+- Mapeo asociativo: ventajas/desventajas ::
+- k-way set-associative ::
+- Campos de dirección en cada mapeo ::
+- Hit ratio vs. tamaño de caché [Fig. 5.15] ::
+- Caché lógica vs. física ::
+
+** Notas (Notes):
+- *Definición y propósito* [Stallings, p. 161]:
+  Combinar el tiempo de acceso de la memoria rápida (costosa) con la
+  gran capacidad de la memoria lenta (barata). Contiene una copia de
+  porciones de la memoria principal.
+
+- *Terminología fundamental* [Stallings, pp. 162–163]:
+  - Bloque (Block) :: unidad mínima de datos transferida entre caché y
+    memoria principal. Tamaño fijo (ej. 4–128 bytes).
+  - Línea (Line) :: espacio físico en la caché que aloja un bloque más
+    información de control (tag, bits de validez, bits sucios).
+  - Tag :: porción de la dirección de memoria principal que identifica
+    qué bloque está almacenado en esa línea.
+  - Tamaño de línea (Line Size) :: número de bytes de datos, sin contar
+    tag ni bits de control.
+  - $m$ = número de líneas en caché; $M = 2^n / K$ = número de bloques
+    en memoria principal ($K$ = palabras por bloque, $n$ = bits de dirección).
+
+- *Operación de lectura* [Stallings, Fig. 5.3, p. 163]:
+  1. CPU genera dirección de lectura RA.
+  2. ¿Está el bloque que contiene RA en caché?
+  3. *HIT* → entregar la palabra al CPU desde caché.
+  4. *MISS* → acceder a memoria principal; cargar el bloque en una línea
+     de caché; entregar la palabra al CPU.
+  - Técnica *Critical Word First* [Stallings, p. 164]: el hardware
+    solicita primero la palabra faltante y la envía al CPU sin esperar
+    que se llene toda la línea (el llenado ocurre en paralelo).
+
+- *Tamaño de caché* [Stallings, p. 167]:
+  - Caché más grande \rightarrow mayor hit ratio, pero más lento (más puertas)
+    y más costoso.
+  - Caché más pequeña \rightarrow más rápida, pero menor hit ratio.
+  - Práctica: incluso cachés de 1 kB–128 kB logran $H > 0.75$ [Stallings, p. 153].
+  - No existe un tamaño "óptimo" universal; depende de la carga de trabajo.
+
+- *Función de Mapeo Directo (Direct Mapping)* [Stallings, p. 168]:
+  - Regla :: cada bloque de RAM mapea a *una única línea* de caché.
+  - Fórmula :: $i = j \bmod m$  donde $i$ = línea, $j$ = bloque, $m$ = total líneas.
+  - Estructura de dirección (ejemplo 5.1a: RAM 16 MB, caché 64 kB,
+    bloque 4 bytes, dirección 24 bits):
+    | Campo      | Bits  | Función                              |
+    |------------+-------+--------------------------------------|
+    | Tag        | 8     | identifica cuál de los 256 grupos    |
+    | Línea      | 14    | selecciona 1 de las 16 K líneas      |
+    | Offset     | 2     | selecciona el byte dentro del bloque |
+  - Ventajas :: simple, barato, búsqueda rápida (una sola comparación).
+  - Desventaja :: *Thrashing* — dos bloques que mapean a la misma línea
+    se expulsan mutuamente aunque haya espacio libre en otra línea.
+
+- *Función de Mapeo Asociativo (Fully Associative)* [Stallings, p. 173]:
+  - Regla :: cualquier bloque puede ir a *cualquier línea*.
+  - Requiere *CAM* (Content-Addressable Memory): compara el tag contra
+    *todas* las líneas en paralelo en un ciclo de reloj.
+  - Estructura de dirección (mismo ejemplo):
+    | Campo  | Bits  | Función                        |
+    |--------+-------+--------------------------------|
+    | Tag    | 22    | identifica el bloque de RAM    |
+    | Offset | 2     | posición dentro del bloque     |
+  - Ventajas :: elimina el thrashing; máxima flexibilidad de colocación.
+  - Desventaja :: hardware caro y complejo (CAM de costo ~60% superior a SRAM
+    equivalente [Stallings, p. 171]).
+
+- *Función de Mapeo Asociativo por Conjuntos (Set-Associative)* [Stallings, p. 176]:
+  - Regla :: la caché tiene $v$ conjuntos (sets) de $k$ líneas cada uno
+    ($m = v \times k$). El bloque mapea a un conjunto fijo pero puede
+    ocupar cualquier línea dentro del conjunto.
+  - Fórmula :: $i = j \bmod v$
+  - Nombre :: *k-way set-associative*.
+  - Estructura de dirección (ejemplo 5.1c, 2-way):
+    | Campo     | Bits  | Función                            |
+    |-----------+-------+------------------------------------|
+    | Tag       | 9     | identifica cuál grupo de conjuntos |
+    | Conjunto  | 13    | selecciona 1 de los 8192 conjuntos |
+    | Offset    | 2     | posición dentro del bloque         |
+  - Casos extremos:
+    - $k = 1$ (1-way) \rightarrow equivale a mapeo directo.
+    - $k = m$ (m-way) \rightarrow equivale a mapeo totalmente asociativo.
+  - Práctica :: *2-way* mejora significativamente el hit ratio vs. directo;
+    *4-way* da una mejora modesta adicional; más de 8-way tiene retorno
+    disminuyente [Stallings, Fig. 5.15, p. 180].
+
+- *Caché lógica vs. física* [Stallings, p. 166]:
+  - Lógica (virtual cache) :: antes de la MMU; más rápida, pero requiere
+    invalidación al cambiar de proceso.
+  - Física (physical cache) :: después de la MMU; coherencia natural,
+    pero requiere tiempo extra de traducción de dirección.
+
+- *Tamaños de caché en procesadores reales* [Stallings, Tabla 5.2, p. 167]:
+  | Procesador          | Año  | L1             | L2          | L3         |
+  |---------------------+------+----------------+-------------+------------|
+  | Intel 80486         | 1989 | 8 kB           | —           | —          |
+  | Pentium 4           | 2000 | 8/8 kB         | 256 kB      | —          |
+  | IBM POWER6          | 2007 | 64/64 kB       | 4 MB        | 32 MB      |
+  | Intel Core i7 EE    | 2011 | 6×32/32 kB     | 6×1.5 MB   | 12 MB      |
+  | IBM z13             | 2015 | 24×96/128 kB   | 24×2/2 MB  | 64 MB + L4 |
+
+** Resumen (Summary):
+La caché es una copia parcial y rápida de la memoria principal organizada
+en líneas que contienen bloques de datos más un tag de identificación.
+Ante un MISS, se carga el bloque completo (Critical Word First optimiza
+la entrega al CPU). Existen tres funciones de mapeo: el *mapeo directo*
+es simple pero propenso al thrashing; el *asociativo total* elimina el
+thrashing pero requiere costosa CAM; el *asociativo por conjuntos*
+(k-way) es el compromiso óptimo utilizado en todos los procesadores
+modernos. La dirección de memoria se divide en campos (Tag, Línea/Set,
+Offset) cuya longitud depende del tipo de mapeo.
+
+
+* 2026-06-27 Políticas de Caché: Sustitución, Escritura y Organización
+** Preguntas y Términos clave (Cue):
+- ¿Cuándo se necesita un algoritmo de sustitución? ::
+- LRU — definición e implementación ::
+- FIFO — Anomalía de Bélády ::
+- LFU ::
+- Algoritmo aleatorio (Random) ::
+- Write-Through: ventaja y desventaja ::
+- Write-Back: dirty bit, ventaja y desventaja ::
+- Write Allocate vs. No Write Allocate ::
+- Coherencia de caché (cache coherency) ::
+- Tamaño de línea óptimo ::
+- Caché unificada vs. dividida (split) ::
+- Política de inclusión: inclusive, exclusive, noninclusive ::
+- Evolución Intel x86 [Tabla 5.4] ::
+- IBM z13: política de escritura por nivel ::
+
+** Notas (Notes):
+- *Algoritmos de sustitución (Replacement Algorithms)* [Stallings, p. 181]:
+  Solo necesarios en mapeo *asociativo* y *asociativo por conjuntos*
+  (en mapeo directo no hay elección).
+  - *LRU (Least Recently Used)* ::
+    Reemplaza la línea que no ha sido referenciada por más tiempo.
+    Implementación en 2-way: un bit USE por línea; al referenciar,
+    se pone a 1 y se pone a 0 el del otro. Al reemplazar, se escoge
+    la que tiene USE=0. Es el más popular por su simplicidad y eficacia.
+  - *FIFO (First In, First Out)* ::
+    Reemplaza la línea que lleva más tiempo en caché.
+    Implementación: buffer circular.
+    Limitación: *Anomalía de Bélády* — aumentar el número de marcos
+    puede empeorar el hit ratio (no ocurre con LRU).
+  - *LFU (Least Frequently Used)* ::
+    Reemplaza la línea con menos accesos acumulados.
+    Implementación: contador por línea. Problema: bloque muy usado
+    al inicio nunca se expulsa aunque ya no sea relevante.
+  - *Aleatorio (Random)* ::
+    Selección al azar entre las líneas candidatas.
+    Rendimiento solo ligeramente inferior a LRU (Smith, 1982).
+    Hardware trivial — útil cuando la velocidad importa más que
+    la optimalidad [Stallings, p. 181].
+
+- *Ejercicio FIFO resuelto* (3 marcos, secuencia: 1→2→3→1→4→1→2):
+  | Ref. | Marco 1 | Marco 2 | Marco 3 | Expulsado      | Resultado |
+  |------+---------+---------+---------+----------------+-----------|
+  | 1    | *1*     | —       | —       | —              | FALLO     |
+  | 2    | 1       | *2*     | —       | —              | FALLO     |
+  | 3    | 1       | 2       | *3*     | —              | FALLO     |
+  | 1    | 1       | 2       | 3       | —              | ACIERTO   |
+  | 4    | *4*     | 2       | 3       | 1 (más antiguo) | FALLO     |
+  | 1    | 4       | *1*     | 3       | 2 (más antiguo) | FALLO     |
+  | 2    | 4       | 1       | *2*     | 3 (más antiguo) | FALLO     |
+  Fallos: 6  |  Aciertos: 1  |  Hit ratio = $1/7 \approx 14.3\%$
+
+- *Política de escritura* [Stallings, p. 182]:
+  - *Write-Through* ::
+    Cada escritura actualiza caché *y* memoria principal
+    simultáneamente.
+    - (+) RAM siempre válida; coherencia entre múltiples cachés simple.
+    - (−) Genera tráfico de bus constante; posible cuello de botella.
+    Usado en: IBM z13 L1 y L2 (por alta velocidad hacia L3).
+  - *Write-Back (Copy-Back)* ::
+    Las escrituras van *solo a caché*. Se activa el *dirty bit*.
+    Al expulsar la línea se escribe a RAM solo si dirty=1.
+    - (+) Mínimo tráfico de bus; mejor rendimiento general.
+    - (−) RAM puede estar desactualizada; coherencia compleja.
+    Usado en: IBM z13 L3 y L4 (menor velocidad hacia RAM).
+  - Ejemplo 5.2 [Stallings, p. 182]: línea de 32 bytes, 30 ns/palabra (4B).
+    - Write-Back: escribe línea 1 vez al expulsar = $8 \times 30 = 240$ ns.
+    - Write-Through: 30 ns por cada escritura.
+    - Si la línea se modifica *más de 8 veces* antes de expulsarse
+      \rightarrow Write-Back es más eficiente.
+
+- *Write Allocate vs. No Write Allocate* [Stallings, p. 182]:
+  - *Write Allocate* :: en MISS de escritura, se carga el bloque a
+    caché y luego se escribe. Habitual con Write-Back.
+  - *No Write Allocate* :: en MISS de escritura, se escribe
+    directamente en RAM sin cargar a caché. Habitual con Write-Through.
+
+- *Coherencia de caché* [Stallings, p. 183]:
+  Problema: múltiples cachés o I/O acceden a la misma RAM.
+  Enfoques:
+  - Bus watching con Write-Through :: monitorear el bus; invalidar
+    entradas si otro dispositivo escribe en la misma dirección.
+  - Hardware transparency :: propagación automática de actualizaciones
+    a todas las cachés que tienen copia del dato.
+  - Memoria no cacheable :: la memoria compartida se declara
+    "non-cacheable"; siempre se accede a RAM directamente.
+
+- *Tamaño de línea* [Stallings, p. 183]:
+  - Al aumentar el tamaño, inicialmente el hit ratio sube
+    (mayor localidad espacial explotada).
+  - Al seguir aumentando, el hit ratio cae: cada MISS tarda más en
+    transferirse y los datos añadidos son cada vez menos útiles.
+  - Optimum experimental: *8–64 bytes*; HPC: *64–128 bytes* [Stallings, p. 184].
+
+- *Número de cachés: unificada vs. dividida* [Stallings, p. 186]:
+  - *Caché Unificada* :: instrucciones + datos en una sola caché.
+    - (+) Mayor hit ratio adaptativo (balancea automáticamente).
+    - (+) Un solo diseño de hardware.
+  - *Caché Dividida (Split / Harvard-style)* :: I-cache + D-cache.
+    - (+) Elimina *contención* entre fetch de instrucciones y
+      acceso a datos durante el pipelining.
+    - Tendencia actual: *dividida en L1*, unificada en L2 y L3.
+  - IBM z13: L1 y L2 divididas; L3 y L4 unificadas [Stallings, p. 190].
+
+- *Política de inclusión* [Stallings, p. 186]:
+  - *Inclusiva* :: un dato en $M_i$ está garantizado en todos $M_{i+j}$.
+    Simplifica la coherencia en multiprocessors.
+  - *Exclusiva* :: un dato en $M_i$ NO está en niveles inferiores.
+    No desperdicia capacidad; requiere búsqueda en múltiples niveles.
+  - *No inclusiva (noninclusive)* :: un dato en $M_i$ puede o no estar
+    en $M_{i+1}$. Política más flexible; caso general.
+
+- *Evolución Intel x86* [Stallings, Tabla 5.4, pp. 187–188]:
+  | Problema                              | Solución                           | Procesador    |
+  |---------------------------------------+------------------------------------+---------------|
+  | Memoria externa más lenta que el bus  | Caché externa con tecnología rápida | 386           |
+  | Bus externo es cuello de botella      | Mover caché al chip (on-chip)       | 486           |
+  | Contención instrucción/dato en caché  | Cachés divididas I + D              | Pentium       |
+  | Bus externo lento para L2             | Bus dedicado "back-side" para L2   | Pentium Pro   |
+  | L2 externa lenta                      | L2 integrada en el chip            | Pentium II    |
+  | Aplicaciones con grandes bases de datos| L3 externa                         | Pentium III   |
+  | L3 externa lenta                      | L3 on-chip                         | Pentium 4     |
+
+** Resumen (Summary):
+Cuando la caché está llena, el algoritmo de sustitución determina qué
+línea se expulsa: LRU (estándar, respeta localidad temporal), FIFO
+(simple pero sujeto a la Anomalía de Bélády), LFU (conteo de usos) y
+aleatorio (hardware mínimo). La política Write-Through garantiza
+coherencia de RAM a costa de mayor tráfico; Write-Back minimiza el
+tráfico usando un dirty bit. El tamaño de línea óptimo está entre 8 y
+64 bytes. La caché dividida (L1) elimina la contención en pipelines.
+Los principios de inclusión determinan si los datos se replican entre
+niveles. Toda la industria converge hacia el mismo diseño: L1 4/8-way
+dividida + L2/L3 16-way unificada + Write-Back a partir de L3.
+
+
+* TODO Mis Tareas [100%]
+- [X] Leer Stallings Cap. 4, pp. 134–159 (jerarquía de memoria)
+- [X] Leer Stallings Cap. 5, pp. 161–198 (diseño de caché)
+- [X] Revisar Fig. 4.2 y Fig. 4.3: distribuciones de localidad
+- [X] Resolver ejercicio 4.7 del libro (acceso promedio con caché + RAM + disco)
+- [X] Resolver ejercicio 5.4 del libro (tag, línea, word en hex para los tres mapeos)
+- [X] Verificar la Anomalía de Bélády con un ejemplo de 4 marcos vs. 3 marcos (FIFO)
+- [X] Repasar la estructura del IBM z13 en la Fig. 5.18 (Stallings p. 190)
+- [X] Preparar preguntas sobre coherencia de caché para la clase
+
+#+print_bibliography:

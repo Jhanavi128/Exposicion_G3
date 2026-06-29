@@ -5,8 +5,8 @@
 #+options: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
 #+title: Plantilla para Toma de Notas en Clase
 #+date: 2024-07-
-#+author: COLOQUE SU NOMBRE
-#+email: coloque.su.nombre@epn.edu.ec
+#+author: Anthonny Almeida
+#+email: anthonny.almeida@epn.edu.ec
 #+language: Español
 #+select_tags: export
 #+exclude_tags: noexport
@@ -107,6 +107,80 @@ notas y una tercera para el resumen. Algo que no incluye la estrategia
 de Cornell es apuntar las tareas. Pero esto lo podemos aprovechar con
 Emacs ~TODO~.
 
+* 2026-06-27 ¿Qué pasa cuando la caché se llena? — Políticas de Caché
+** Preguntas y Términos clave (Cue):
+- ¿Qué hago cuando no hay espacio en caché? ::
+- LRU :: saco lo que usé hace más tiempo
+- FIFO :: saco el que llegó primero, sin importar si lo uso
+- Aleatorio :: sorteo quién sale (funciona casi tan bien como LRU)
+- Write-Through :: actualizo caché y RAM al mismo tiempo
+- Write-Back :: actualizo la RAM solo cuando el dato sale de caché
+- Dirty bit :: marca que avisa "este dato fue modificado"
+- ¿Caché dividida o unificada? ::
+ 
+** Notas (Notes):
+*** ¿A quién saco cuando la caché está llena?
+- Cuando llega un dato nuevo y no hay espacio, hay que expulsar uno.
+  Eso lo decide el *algoritmo de sustitución*.
+- *LRU* :: saca el dato que lleva más tiempo sin usarse.
+  Funciona bien porque si no lo usé recientemente, probablemente
+  tampoco lo necesite pronto. Es el más usado en la práctica.
+- *FIFO* :: saca el que llegó primero, como la cola del banco.
+  Problema: puede sacar datos que todavía se usan mucho.
+- *Aleatorio* :: elige al azar. Sorprendentemente casi tan bueno como
+  LRU, con hardware mucho más simple.
+ 
+*** Ejercicio en vivo: FIFO con 3 marcos
+Secuencia: *1 → 2 → 3 → 1 → 4 → 1 → 2*
+| Ref. | Marco 1 | Marco 2 | Marco 3 | ¿Quién sale?              | Resultado |
+|------+---------+---------+---------+---------------------------+-----------|
+|    1 |     *1* |       — | —       | nadie, hay espacio        | ✗ Fallo   |
+|    2 |       1 |     *2* | —       | nadie, hay espacio        | ✗ Fallo   |
+|    3 |       1 |       2 | *3*     | nadie, hay espacio        | ✗ Fallo   |
+|    1 |       1 |       2 | 3       | nadie, ya está            | ✓ Acierto |
+|    4 |     *4* |       2 | 3       | sale el 1 (llegó primero) | ✗ Fallo   |
+|    1 |       4 |     *1* | 3       | sale el 2                 | ✗ Fallo   |
+|    2 |       4 |       1 | *2*     | sale el 3                 | ✗ Fallo   |
+ 
+*Resultado*: 1 acierto de 7 referencias → Hit ratio ≈ 14%
+ 
+*Lección*: FIFO expulsó al 1 justo después de usarlo (paso 4→5).
+LRU lo habría protegido y dado un acierto extra en el paso 6.
+ 
+*** ¿Cuándo escribimos los cambios en la RAM?
+- *Write-Through* — escribo en caché y RAM al mismo tiempo:
+  - Como corregir el borrador y el cuaderno oficial a la vez.
+  - Ventaja: la RAM siempre está al día.
+  - Desventaja: genera mucho tráfico constante.
+ 
+- *Write-Back* — escribo en la RAM solo cuando el dato sale de caché:
+  - El dato modificado lleva un *dirty bit* ("está sucio, hay que
+    pasarlo en limpio"). Solo se copia a RAM al ser expulsado.
+  - Ventaja: mucho menos tráfico, mejor rendimiento.
+  - Desventaja: la RAM puede tener datos viejos por un tiempo.
+ 
+- *¿Cuándo conviene cada uno?* Si un bloque se modifica más de 8 veces
+  antes de salir de caché, Write-Back acumula menos tiempo de
+  escritura y gana.
+ 
+*** Dos detalles más de diseño
+- *Tamaño de bloque*: el bloque ideal tiene entre 8 y 64 bytes.
+  Muy pequeño aprovecha poco la localidad espacial; muy grande tarda
+  más en cargarse y trae datos que quizás no uses. El estándar
+  actual es *64 bytes*.
+- *Caché dividida (split)*: separar en I-cache (instrucciones) y
+  D-cache (datos) elimina la competencia cuando el CPU necesita
+  buscar la próxima instrucción y leer un dato al mismo tiempo.
+  Es el estándar en L1 de todos los procesadores modernos.
+ 
+** Resumen (Summary):
+Cuando la caché se llena, LRU expulsa lo menos usado recientemente y
+es la mejor opción; FIFO expulsa lo más antiguo sin importar su uso
+(puede tomar malas decisiones, como vimos en el ejercicio). Para las
+escrituras, Write-Through mantiene la RAM siempre actualizada pero
+genera tráfico; Write-Back es más eficiente pero la RAM puede quedar
+desactualizada temporalmente. El bloque estándar mide 64 bytes y la
+L1 moderna siempre está dividida en instrucciones y datos.
 
 * TODO Mis Tareas [50%]
 - [X] Leer este documento
