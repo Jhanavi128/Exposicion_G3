@@ -3,10 +3,10 @@
 #+options: d:(not "LOGBOOK") date:t e:t email:nil expand-links:t f:t
 #+options: inline:t num:t p:nil pri:nil prop:nil stat:t tags:t
 #+options: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
-#+title: Plantilla para Toma de Notas en Clase
-#+date: 2024-07-
-#+author: Anthonny Almeida
-#+email: anthonny.almeida@epn.edu.ec
+#+title: Memoria Caché
+#+date: 2026-06-29
+#+author: Anthonny Almeida, Molina Jhanavi
+#+email: anthonny.almeida@epn.edu.ec, jhanavi.molina@epn.edu.ec
 #+language: Español
 #+select_tags: export
 #+exclude_tags: noexport
@@ -38,7 +38,7 @@
 
 
 #+begin_export latex
-\fancyhead[C]{\includegraphics[scale=0.05]{./logoEPN.jpg}\\
+\fancyhead[C]{\includegraphics[scale=0.05]{img/logoEPN.jpg}\\
 ESCUELA POLITÉCNICA NACIONAL\\FACULTAD DE INGENIERÍA DE SISTEMAS\\
 ARQUITECTURA DE COMPUTADORES}
 \thispagestyle{fancy}
@@ -48,7 +48,7 @@ ARQUITECTURA DE COMPUTADORES}
 #+begin_comment
 Este comentario contiene la estructura básica para toma de notas de
 acuerdo a la metodología explicada por la Universidad de Cornell.
-* 2024-xx-xx Título de la clase/charla
+*  2026-06-29 Memoria Caché
 ** Preguntas y Términos clave (Cue):
 - término clave1 ::
 - término clave2 ::
@@ -182,9 +182,109 @@ genera tráfico; Write-Back es más eficiente pero la RAM puede quedar
 desactualizada temporalmente. El bloque estándar mide 64 bytes y la
 L1 moderna siempre está dividida en instrucciones y datos.
 
+* 2026-06-29 Métodos de Mapeo en Memoria Caché
+** Preguntas y Términos clave (Cue):
+- ¿Cómo decide la caché dónde guardar un bloque? ::
+- Mapeo Directo: cada bloque de RAM tiene una única línea asignada en caché
+- Thrashing: fallo continuo cuando dos bloques compiten por la misma línea
+- Tag (etiqueta): bits que identifican de qué bloque de RAM viene el dato
+- Mapeo Asociativo Puro: cualquier bloque puede guardarse en cualquier línea libre
+- CAM: hardware que compara etiquetas en paralelo en todas las líneas simultáneamente
+- Mapeo Asociativo por Conjuntos: el bloque tiene conjunto fijo pero línea libre dentro de él
+- K-Way: número de líneas por conjunto (ej. 4-way, 8-way)
+- ¿Por qué el asociativo por conjuntos es el estándar de la industria? ::
+
+** Notas (Notes):
+** Mapeo Directo
+- Cada bloque de la RAM tiene una única línea posible en caché, calculada así:
+ 
+  *línea = número_de_bloque mod número_de_líneas_en_caché*
+
+- Ejemplo con 16 384 líneas: el Bloque 0 y el Bloque 16 384 comparten
+  siempre la Línea 0, nunca pueden coexistir en caché al mismo tiempo.
+- *Ventaja*: hardware extremadamente simple y barato; la dirección ya
+  dice exactamente adónde ir, sin búsqueda.
+- *Desventaja*: *Thrashing* ,si el programa alterna entre dos bloques
+  que comparten línea, la caché los borra y recarga indefinidamente,
+  destruyendo el rendimiento.
+- La dirección de 32 bits se divide en tres campos:
+  | Campo    | Bits | Función                                       |
+  |----------+------+-----------------------------------------------|
+  | Etiqueta |    8 | Identifica de qué bloque de RAM viene el dato |
+  | Línea    |   14 | Indica directamente a qué fila de caché ir    |
+  | Palabra  |   10 | Selecciona el byte exacto dentro del bloque   |
+
+** Mapeo Asociativo Puro
+- Flexibilidad total: cualquier bloque de RAM puede ocupar cualquier
+  línea libre de la caché, sin restricción matemática de ubicación.
+- *Ventaja*: elimina por completo el Thrashing, el Bloque 0 y el
+  Bloque 16 384 conviven sin problema en líneas distintas.
+- *Desventaja*: como el bloque puede estar en cualquier lugar, para
+  encontrarlo hay que revisar todas las líneas al mismo tiempo.
+  - Esto requiere hardware especialísimo: la *Memoria CAM* (Content
+    Addressable Memory), que compara la etiqueta buscada contra todas
+    las líneas en paralelo y en tiempo real.
+  - Es extremadamente cara, consume mucha energía y es compleja de
+    fabricar en silicio.
+- La dirección de 32 bits pierde el campo de línea:
+  | Campo    | Bits | Función                                          |
+  |----------+------+--------------------------------------------------|
+  | Etiqueta |   22 | La CAM la compara en paralelo con toda la caché  |
+  | Palabra  |   10 | Selecciona el byte exacto dentro del bloque      |
+- Por su costo, la asociatividad pura solo se usa en cachés muy
+  pequeñas dentro de los procesadores reales.
+
+** Mapeo Asociativo por Conjuntos
+- Combina lo mejor de los dos métodos anteriores, es el estándar en
+  casi todos los procesadores modernos.
+- La caché se divide en *conjuntos*, cada bloque tiene un conjunto
+  obligatorio (como en el directo) pero dentro de ese conjunto puede
+  ocupar cualquier línea libre (como en el asociativo puro).
+- El número de líneas por conjunto se llama *K-Way*:
+  - 2-way: 2 líneas por conjunto
+  - 4-way / 8-way: lo más común en cachés L1 y L2 de Intel y AMD
+- *Ventaja*: elimina casi por completo el Thrashing, dos bloques que
+  caen en el mismo conjunto simplemente ocupan líneas distintas dentro
+  de él y conviven sin problemas.
+- *Ventaja*: el circuito de comparación es pequeño (solo compara las
+  pocas líneas del conjunto), así que es rápido y económico.
+- *Desventaja*: requiere algo más de lógica de control que el mapeo
+  directo, aunque la diferencia es mínima en la práctica.
+- La dirección de 32 bits se divide en:
+  | Campo    | Bits | Función                                                      |
+  |----------+------+--------------------------------------------------------------|
+  | Etiqueta |    9 | Confirma Hit o Miss comparando solo las líneas del conjunto  |
+  | Conjunto |   13 | Lleva al procesador directo al grupo que le corresponde      |
+  | Palabra  |   10 | Selecciona el byte exacto dentro del bloque                  |
+
+** Tabla comparativa de los tres métodos
+| Criterio         | Mapeo Directo | Asociativo Puro          | Asoc. por Conjuntos   |
+|------------------+---------------+--------------------------+-----------------------|
+| Flexibilidad     | Ninguna       | Total                    | Controlada (media)    |
+| Riesgo Thrashing | Muy alto      | Nulo                     | Muy bajo              |
+| Costo hardware   | Muy bajo      | Muy alto (requiere CAM)  | Moderado              |
+| Uso real         | Raro          | Solo cachés muy pequeñas | Estándar en L1 y L2  |
+
+*Conclusión*: el Asociativo por Conjuntos gana porque da flexibilidad
+suficiente para evitar el Thrashing sin encarecer el chip. Más de 8 o
+16 vías ya no vale la pena: el circuito se vuelve caro sin ganar
+rendimiento real (Stallings).
+
+** Resumen (Summary):
+Existen tres métodos para decidir dónde guarda la caché un bloque de
+RAM. El *Mapeo Directo* asigna a cada bloque una única línea posible
+mediante el residuo de la división, es barato pero sufre Thrashing
+cuando dos bloques compiten por el mismo espacio, el *Mapeo Asociativo
+Puro* permite guardar cualquier bloque en cualquier línea libre,
+eliminando el Thrashing por completo, pero exige hardware CAM muy
+costoso para buscar en paralelo, el *Mapeo Asociativo por Conjuntos*
+combina ambos: el bloque tiene un conjunto fijo pero elige libremente
+entre las líneas de ese conjunto (K-Way), esto reduce el Thrashing
+casi a cero con un costo de hardware moderado, razón por la que es el
+estándar en las cachés L1 y L2 de todos los procesadores modernos.
+
 * TODO Mis Tareas [50%]
 - [X] Leer este documento
 - [ ] Escribir el resumen  de la exposición 1
 
-#+print_bibliography: 
- 
+#+print_bibliography:
