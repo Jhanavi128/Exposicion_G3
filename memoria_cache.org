@@ -21,7 +21,7 @@
 #+REVEAL_TRANS: convex
 #+REVEAL_SPEED: default@
 #+REVEAL_PLUGINS: (highlight notes zoom search)
-#+REVEAL_INIT_OPTIONS: slideNumber: 'c/t', progress: true, history: true, center: true, touch: true, hash: true, controlsLayout: 'bottom-right', backgroundTransition: 'fade', defaultTiming: 120, totalTime: 2400
+#+REVEAL_INIT_OPTIONS: slideNumber: 'c/t', progress: true, history: true, center: true, touch: true, hash: true, controlsLayout: 'bottom-right', backgroundTransition: 'fade', defaultTiming: 120, totalTime: 2400, width: 1280, height: 720, margin: 0.1, minScale: 0.2, maxScale: 1.5
 #+REVEAL_EXTRA_CSS: ./custom.css
 #+REVEAL_HLEVEL: 2
 #+REVEAL_DEFAULT_FRAG_STYLE: appear
@@ -50,7 +50,7 @@
     <td>🧑‍💻 Integrante 1<br/><strong style="color:#f0c040;">Rompehielo &amp; Localidad</strong></td>
     <td>📐 Integrante 2<br/><strong style="color:#7ecfff;">Características &amp; Jerarquía</strong></td>
     <td> Integrante 3<br/><strong style="color:#a8e6cf;">Principios de Caché</strong></td>
-    <td>🎯 Integrante 4<br/><strong style="color:#ff7675;">Políticas &amp; Reto</strong></td>
+    <td> Anthonny Almeida<br/><strong style="color:#ff7675;">Políticas &amp; Reto</strong></td>
   </tr>
 </table>
 #+END_EXPORT
@@ -61,7 +61,7 @@ Saludar al público, presentar a los cuatro integrantes por nombre y su
 rol. Decir: "Hoy vamos a explorar por qué su laptop no explota aunque
 la RAM sea mil veces más lenta que el procesador. La respuesta está en
 la jerarquía de memoria y en la caché."  Pasar a la agenda.
-#+END_NOTES
+a#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 2 — AGENDA
@@ -969,6 +969,77 @@ POR DENTRO la memoria caché."
 #+END_EXPORT
 
 # ============================================================
+#  DIAPOSITIVA EXTRA — TAMAÑO DE CACHÉ
+# ============================================================
+* Elementos de Diseño: Tamaño de la Caché
+:PROPERTIES:
+:reveal_background: #0a0f1e
+:reveal_extra_attr: style="font-size: 85%;"
+:END:
+
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_EXPORT html
+<p style="font-size:0.65em; color:#aaa; margin-bottom:8px;">
+  Stallings p. 167 — El delicado equilibrio de capacidad [cite: 194]
+</p>
+#+END_EXPORT
+
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_EXPORT html
+<div class="concepto-box warn" style="margin-bottom:12px;">
+  <strong>El objetivo dual:</strong><br/>
+  Lo suficientemente <em>pequeña</em> para que el costo promedio por bit se acerque al de la memoria principal, pero lo suficientemente <em>grande</em> para que el tiempo de acceso se acerque al de la caché pura.
+</div>
+#+END_EXPORT
+
+#+BEGIN_EXPORT html
+<div class="col2">
+<div>
+#+END_EXPORT
+
+#+ATTR_REVEAL: :frag (appear appear appear)
+*¿Por qué no hacerla inmensa?*
+- ⏱️ *Lentitud por compuertas:* Mayor tamaño requiere más compuertas para el direccionamiento. Las cachés muy grandes tienden a ser ligeramente más lentas.
+- 📐 *Límites físicos:* El área disponible en el chip y la placa base imponen un límite rígido.
+- 📈 *Dependencia de carga:* El rendimiento es muy sensible a la carga de trabajo ejecutada; no existe un tamaño "óptimo" universal.
+
+#+BEGIN_EXPORT html
+</div>
+<div>
+#+END_EXPORT
+
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_EXPORT html
+<div style="background:#0d1e30; border:2px solid #7ecfff; border-radius:10px; padding:12px; font-size:0.60em; text-align:left; margin-top:10px;">
+  <p style="color:#7ecfff; font-weight:700; font-size:1.2em; text-align:center; margin-bottom:8px;">
+    Evolución (Stallings Tab. 5.2) [cite: 201]
+  </p>
+  <ul>
+    <li><strong>1989 (Intel 486):</strong> 8 kB L1 [cite: 202]</li>
+    <li><strong>1999 (Pentium III):</strong> 512 kB L2 [cite: 202]</li>
+    <li><strong>2015 (IBM z13):</strong> 64 MB L3 / 480 MB L4 [cite: 202]</li>
+  </ul>
+</div>
+#+END_EXPORT
+
+#+BEGIN_EXPORT html
+</div>
+</div>
+#+END_EXPORT
+
+#+BEGIN_NOTES
+INTEGRANTE 3 — ~1.5 min
+"Entrando a los elementos de diseño, lo primero que debemos definir es el tamaño.
+Todos queremos la mayor cantidad de caché posible, pero hay restricciones físicas: 
+mientras más grande es, más compuertas lógicas necesitas para buscar el dato, 
+lo que la hace un poco más lenta."
+
+"Por eso no tenemos gigabytes de L1. Buscamos el equilibrio perfecto
+entre costo, capacidad y velocidad, el cual depende enteramente del programa 
+que estemos ejecutando."
+#+END_NOTES
+
+# ============================================================
 #  DIAPOSITIVA 18 — MAPEO DIRECTO
 # ============================================================
 * Función de Mapeo Directo
@@ -1464,6 +1535,7 @@ instrucciones y datos no compiten."
 * 🏆 El Reto Final
 :PROPERTIES:
 :reveal_background: #1a0505
+:reveal_extra_attr: style="font-size: 85%;"
 :END:
 
 #+BEGIN_EXPORT html
@@ -1727,6 +1799,7 @@ Invitar preguntas.
 * Referencias
 :PROPERTIES:
 :reveal_background: #0a0f1e
+:reveal_extra_attr: style="font-size: 85%;"
 :END:
 
 #+BEGIN_EXPORT html

@@ -6,17 +6,21 @@
 /* ── Tipografía global ───────────────────────────────────────── */
 .reveal {
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 34px;
+  font-size: 28px;
 }
 
 .reveal h1 { font-size: 1.8em; color: #f0c040; letter-spacing: 1px; }
 .reveal h2 { font-size: 1.3em; color: #7ecfff; }
 .reveal h3 { font-size: 1.05em; color: #a8e6cf; }
-.reveal p, .reveal li { line-height: 1.55; }
+.reveal p, .reveal li { line-height: 1.2; margin-bottom: 8px; }
 .reveal strong { color: #f0c040; }
 .reveal em   { color: #a8e6cf; font-style: normal; }
 .reveal code { background: #1e2a3a; color: #f8b400; padding: 2px 8px;
                border-radius: 4px; font-size: 0.85em; }
+.reveal ul, .reveal ol {
+  font-size: 0.9em; /* Un poquito más pequeñas que el texto normal */
+}
+
 
 /* ── Slide de portada de fase ────────────────────────────────── */
 .fase-header { text-align: center; }
@@ -265,4 +269,8 @@
 }
 .col2 > div { flex: 1; }
 
-.reveal .slides section { padding: 30px 50px; }
+/* Forzamos a que las cajas de concepto no tengan tanto margen */
+.concepto-box {
+  margin: 0.3em 0;
+  padding: 0.4em 0.8em;
+}
