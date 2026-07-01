@@ -49,20 +49,12 @@
   <tr>
     <td>🧑‍💻 Integrante 1<br/><strong style="color:#f0c040;">Rompehielo &amp; Localidad</strong></td>
     <td>📐 Integrante 2<br/><strong style="color:#7ecfff;">Características &amp; Jerarquía</strong></td>
-    <td> Integrante 3<br/><strong style="color:#a8e6cf;">Principios de Caché</strong></td>
+    <td> Molina Jhanavi<br/><strong style="color:#a8e6cf;">Principios de Caché</strong></td>
     <td> Anthonny Almeida<br/><strong style="color:#ff7675;">Políticas &amp; Reto</strong></td>
   </tr>
 </table>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 1 — APERTURA (30 s)
-Saludar al público, presentar a los cuatro integrantes por nombre y su
-rol. Decir: "Hoy vamos a explorar por qué su laptop no explota aunque
-la RAM sea mil veces más lenta que el procesador. La respuesta está en
-la jerarquía de memoria y en la caché."  Pasar a la agenda.
-a
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 2 — AGENDA
@@ -851,7 +843,7 @@ POR DENTRO la memoria caché."
   <p style="color:#ddd; font-size:0.75em;">
     Principios, Estructura, Funciones de Mapeo
   </p>
-  <p class="integrante">Integrante 3 · Stallings Cap. 5, pp. 161–186</p>
+  <p class="integrante">Molina Jhanavi · Stallings Cap. 5, pp. 161–186</p>
 </div>
 #+END_EXPORT
 
@@ -1000,9 +992,9 @@ POR DENTRO la memoria caché."
 
 #+ATTR_REVEAL: :frag (appear appear appear)
 *¿Por qué no hacerla inmensa?*
-- ⏱️ *Lentitud por compuertas:* Mayor tamaño requiere más compuertas para el direccionamiento. Las cachés muy grandes tienden a ser ligeramente más lentas.
-- 📐 *Límites físicos:* El área disponible en el chip y la placa base imponen un límite rígido.
-- 📈 *Dependencia de carga:* El rendimiento es muy sensible a la carga de trabajo ejecutada; no existe un tamaño "óptimo" universal.
+- *Lentitud por compuertas:* Mayor tamaño requiere más compuertas para el direccionamiento, las cachés muy grandes tienden a ser ligeramente más lentas.
+- *Límites físicos:* El área disponible en el chip y la placa base imponen un límite rígido.
+- *Dependencia de carga:* El rendimiento es muy sensible a la carga de trabajo ejecutada, no existe un tamaño "óptimo" universal.
 
 #+BEGIN_EXPORT html
 </div>
@@ -1015,6 +1007,12 @@ POR DENTRO la memoria caché."
   <p style="color:#7ecfff; font-weight:700; font-size:1.2em; text-align:center; margin-bottom:8px;">
     Evolución (Stallings Tab. 5.2) [cite: 201]
   </p>
+  
+  <div style="text-align:center; margin-bottom:10px;">
+     <img src="img/evolucion_cache.png"
+          style="width:85%; border-radius:8px;">
+  </div>
+  
   <ul>
     <li><strong>1989 (Intel 486):</strong> 8 kB L1 [cite: 202]</li>
     <li><strong>1999 (Pentium III):</strong> 512 kB L2 [cite: 202]</li>
@@ -1027,18 +1025,6 @@ POR DENTRO la memoria caché."
 </div>
 </div>
 #+END_EXPORT
-
-#+BEGIN_NOTES
-INTEGRANTE 3 — ~1.5 min
-"Entrando a los elementos de diseño, lo primero que debemos definir es el tamaño.
-Todos queremos la mayor cantidad de caché posible, pero hay restricciones físicas: 
-mientras más grande es, más compuertas lógicas necesitas para buscar el dato, 
-lo que la hace un poco más lenta."
-
-"Por eso no tenemos gigabytes de L1. Buscamos el equilibrio perfecto
-entre costo, capacidad y velocidad, el cual depende enteramente del programa 
-que estemos ejecutando."
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 18 — MAPEO DIRECTO
