@@ -47,7 +47,7 @@
 <hr style="border-color:#2a4a6a; margin: 18px 0;"/>
 <table style="width:80%; margin:0 auto; font-size:0.60em; color:#ccc; text-align:center;">
   <tr>
-    <td>🧑‍💻 Integrante 1<br/><strong style="color:#f0c040;">Rompehielo &amp; Localidad</strong></td>
+    <td> Sagñay Micaela<br/><strong style="color:#f0c040;">Rompehielo &amp; Localidad</strong></td>
     <td>📐 Integrante 2<br/><strong style="color:#7ecfff;">Características &amp; Jerarquía</strong></td>
     <td> Molina Jhanavi<br/><strong style="color:#a8e6cf;">Principios de Caché</strong></td>
     <td> Anthonny Almeida<br/><strong style="color:#ff7675;">Políticas &amp; Reto</strong></td>
@@ -71,19 +71,19 @@
   <div style="background:#131f30; border:2px solid #f0c040;
               border-radius:10px; padding:12px 18px; flex:1;
               min-width:160px; font-size:0.62em; text-align:left;">
-    <div style="font-size:1.7em;">🎯</div>
+    <div style="font-size:1.7em;"> </div>
     <div style="color:#f0c040; font-weight:700; font-size:1.1em;">FASE 1</div>
     <div style="color:#ddd;">Rompehielo<br/>Principio de Localidad</div>
-    <div style="color:#888; font-size:0.85em; margin-top:4px;">~ 8 min</div>
+    <div style="color:#888; font-size:0.85em; margin-top:4px;"> </div>
   </div>
 
   <div style="background:#131f30; border:2px solid #7ecfff;
               border-radius:10px; padding:12px 18px; flex:1;
               min-width:160px; font-size:0.62em; text-align:left;">
-    <div style="font-size:1.7em;">🏗️</div>
+    <div style="font-size:1.7em;"> </div>
     <div style="color:#7ecfff; font-weight:700; font-size:1.1em;">FASE 2</div>
     <div style="color:#ddd;">Características &amp;<br/>Jerarquía de Memoria</div>
-    <div style="color:#888; font-size:0.85em; margin-top:4px;">~ 10 min</div>
+    <div style="color:#888; font-size:0.85em; margin-top:4px;"> </div>
   </div>
 
   <div style="background:#131f30; border:2px solid #a8e6cf;
@@ -98,27 +98,20 @@
   <div style="background:#131f30; border:2px solid #ff7675;
               border-radius:10px; padding:12px 18px; flex:1;
               min-width:160px; font-size:0.62em; text-align:left;">
-    <div style="font-size:1.7em;">🏆</div>
+    <div style="font-size:1.7em;"> </div>
     <div style="color:#ff7675; font-weight:700; font-size:1.1em;">FASE 4</div>
     <div style="color:#ddd;">Políticas de Escritura<br/>Reto Hit/Miss</div>
-    <div style="color:#888; font-size:0.85em; margin-top:4px;">~ 10 min</div>
+    <div style="color:#888; font-size:0.85em; margin-top:4px;"> </div>
   </div>
 
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 1 (30 s)
-Mostrar la agenda y decir: "Cada compañero tiene un rol. Yo arranco con
-un juego rápido para calentar motores. Luego [Nombre 2] construye los
-cimientos teóricos, [Nombre 3] nos mete al núcleo de la caché, y
-[Nombre 4] cierra con un reto práctico donde ustedes participan."
-#+END_NOTES
 
 # ============================================================
 #  ══════════════════════════════════════════════════════════
 #  FASE 1 — ROMPEHIELO Y PRINCIPIO DE LOCALIDAD
-#  Integrante 1  |  Stallings 11ª Ed. pp. 135–138
+#  Micaela Sagñay  |  Stallings 11ª Ed. pp. 135–138
 #  ══════════════════════════════════════════════════════════
 # ============================================================
 
@@ -140,10 +133,7 @@ cimientos teóricos, [Nombre 3] nos mete al núcleo de la caché, y
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 1 — PORTADA FASE 1 (10 s)
-Solo presentarse y decir: "¿Listos para el juego?"
-#+END_NOTES
+
 
 # ============================================================
 #  DIAPOSITIVA 4 — PREGUNTA ACTIVADORA
@@ -155,40 +145,30 @@ Solo presentarse y decir: "¿Listos para el juego?"
 
 #+BEGIN_EXPORT html
 <p style="color:#aaa; font-size:0.75em; margin-bottom:20px;">
-  Levanta la mano si sabes la respuesta ✋
+  
 </p>
 #+END_EXPORT
 
 #+ATTR_REVEAL: :frag (appear appear appear appear)
-- 🖥️ Un registro del CPU tarda *~0.3 ns* en operar
-- 💾 La RAM tarda *~60–100 ns* en responder
-- 💿 Un SSD NVMe tarda *~100.000 ns* (0.1 ms)
-- 🖴 Un disco duro tarda *~5.000.000 ns* (5 ms)
+- Un registro del CPU tarda *~0.3 ns* en operar
+- La RAM tarda *~60–100 ns* en responder
+- Un SSD NVMe tarda *~100.000 ns* (0.1 ms)
+- Un disco duro tarda *~5.000.000 ns* (5 ms)
 
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
 <div class="concepto-box warn" style="margin-top:14px;">
-  ⚠️ <strong>Brecha</strong>: La RAM es <strong>~200 veces</strong>
+   <strong>Brecha</strong>: La RAM es <strong>~200 veces</strong>
   más lenta que los registros.<br/>
   Sin la caché, el procesador esperaría casi todo el tiempo.
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 1 — ~2 min
-Hacer las preguntas al público ANTES de revelar las respuestas:
-"¿Alguien sabe cuánto tarda en responder la RAM?" → esperar respuestas.
-"¿Y el disco duro comparado con la RAM?" → esperar.
-Cuando reveles el último fragmento, enfatizar la brecha dramática:
-"El CPU es como Ferrari y la RAM es como un ciclista. Sin solución,
-el procesador solo estaría esperando. ¿Cuál es la solución? La caché.
-Pero primero entendamos POR QUÉ funciona."
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 5 — EL JUEGO DEL ESCRITORIO
 # ============================================================
-* 🎮 El Juego: Escritorio, Archivero y Biblioteca
+*  El Juego: Escritorio, Archivero y Biblioteca
 :PROPERTIES:
 :reveal_background: #0a0f1e
 :END:
@@ -204,9 +184,9 @@ Pero primero entendamos POR QUÉ funciona."
 #+ATTR_REVEAL: :frag (appear appear appear)
 | Analogía | Componente real |
 |---------------------------+------------------------|
-| 📋 Tu *escritorio* (5 carpetas) | Memoria *Caché* |
-| 🗄️ *Archivero* en la sala (500) | Memoria *Principal* (RAM) |
-| 🏛️ *Biblioteca* (miles) | Disco / Almacenamiento |
+|  Tu *escritorio* (5 carpetas) | Memoria *Caché* |
+|  *Archivero* en la sala (500) | Memoria *Principal* (RAM) |
+|  *Biblioteca* (miles) | Disco / Almacenamiento |
 
 #+BEGIN_EXPORT html
   </div>
@@ -217,11 +197,11 @@ Pero primero entendamos POR QUÉ funciona."
 #+BEGIN_EXPORT html
 <div style="font-size:0.62em; text-align:left; margin-top:8px;">
   <p><strong style="color:#f0c040;">Pregunta al público:</strong></p>
-  <p>📌 Si ya tienes una carpeta en el escritorio y necesitas
+  <p> Si ya tienes una carpeta en el escritorio y necesitas
      información de ella de nuevo, ¿vas al archivero?</p>
   <p style="color:#a8e6cf;">→ <strong>¡No! Ya la tienes cerca.</strong>
      Esto es <em>localidad temporal</em>.</p>
-  <p style="margin-top:8px;">📌 Cuando vas al archivero, ¿traes
+  <p style="margin-top:8px;"> Cuando vas al archivero, ¿traes
      también las carpetas vecinas?</p>
   <p style="color:#a8e6cf;">→ <strong>Probablemente sí.</strong>
      Esto es <em>localidad espacial</em>.</p>
@@ -233,20 +213,6 @@ Pero primero entendamos POR QUÉ funciona."
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 1 — ~3 min
-Esta es la dinámica central. PEDIR voluntarios:
-1. "¿Alguien puede ser Bob? Tu trabajo es buscar carpetas."
-2. Designar a alguien como "el archivero" que entrega carpetas lentas.
-3. Narrar: "Bob está escribiendo un informe. Tiene 5 carpetas en
-   su escritorio. Necesita el dato X que ya tiene ahí. ¿Va al
-   archivero?" → NO. Eso es localidad temporal.
-4. "Ahora necesita un dato nuevo. Va al archivero y trae la
-   carpeta Y. Pero también trae las vecinas por si acaso."
-   → Eso es localidad espacial.
-Hacer las dos preguntas de la diapositiva al público real ANTES
-de revelar las respuestas. Esperar participación.
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 6 — PRINCIPIO DE LOCALIDAD (DEFINICIÓN)
@@ -303,15 +269,6 @@ de revelar las respuestas. Esperar participación.
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 1 — ~2 min
-Explicar que este principio es el FUNDAMENTO de toda la jerarquía.
-Sin localidad de referencia, la caché no serviría de nada.
-Vincular con el juego anterior: "Bob tendía a usar las mismas
-carpetas (temporal) y buscar las vecinas (espacial). Eso es
-localidad. Y los programas hacen exactamente lo mismo."
-Mencionar que Denning (1972) fue quien lo formalizó matemáticamente.
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 7 — LOCALIDAD TEMPORAL
@@ -353,15 +310,6 @@ for (i = 0; i &lt; 1000; i++) {
 - Mantiene instrucciones y datos *recientemente usados* en caché
 - Organiza jerarquía de múltiples niveles (L1 → L2 → L3)
 
-#+BEGIN_NOTES
-INTEGRANTE 1 — ~1.5 min
-El ejemplo del bucle es perfecto para la clase. Preguntar:
-"En este for, ¿cuántas veces se lee 'suma'? ¡1000 veces!
-¿Tendría sentido ir a la RAM 1000 veces para buscarla?
-Con caché, la buscamos UNA vez, la traemos y la tenemos
-disponible para las 999 referencias siguientes."
-Dibujar en el aire la idea de "mantener cerca lo que ya usaste".
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 8 — LOCALIDAD ESPACIAL
@@ -405,18 +353,6 @@ for (i = 0; i &lt; N; i++) {
 - Transfiere *bloques* completos (no palabras sueltas)
 - Usa mecanismos de *prefetching* (precarga anticipada)
 
-#+BEGIN_NOTES
-INTEGRANTE 1 — ~1.5 min
-Analogía del escritorio: "Cuando Bob va al archivero a buscar la
-carpeta del Proyecto A, ¿qué hace? Trae también las carpetas
-vecinas: presupuesto, cronograma, contactos. Eso es exactamente
-lo que hace la caché: trae un BLOQUE de memoria, no solo el
-byte que pediste."
-Mencionar que el tamaño del bloque (línea de caché) típicamente
-es de 64 bytes en procesadores modernos.
-CIERRE FASE 1: "Con esto ya tienen la intuición. [Nombre 2] va
-a construir ahora la estructura formal."
-#+END_NOTES
 
 # ============================================================
 #  ══════════════════════════════════════════════════════════
