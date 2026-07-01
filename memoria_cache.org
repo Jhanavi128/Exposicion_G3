@@ -61,7 +61,8 @@ Saludar al público, presentar a los cuatro integrantes por nombre y su
 rol. Decir: "Hoy vamos a explorar por qué su laptop no explota aunque
 la RAM sea mil veces más lenta que el procesador. La respuesta está en
 la jerarquía de memoria y en la caché."  Pasar a la agenda.
-a#+END_NOTES
+a
+#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 2 — AGENDA
@@ -1309,15 +1310,15 @@ luego los pongo a prueba con un ejercicio en tiempo real."
 #+ATTR_REVEAL: :frag (appear appear appear appear)
 #+BEGIN_EXPORT html
 <div class="algo-card">
-  <div class="title">⏰ LRU</div>
+  <div class="title"> LRU</div>
   <div class="tag-badge">Least Recently Used</div>
   <p>Expulsa la línea <strong>menos usada recientemente</strong>.
      Mejor hit ratio. Fácil en 2-way (1 bit USE).</p>
-  <p style="color:#00b894;">⭐ Más usado</p>
+  <p style="color:#00b894;"> Más usado</p>
 </div>
 
 <div class="algo-card">
-  <div class="title">1️⃣ FIFO</div>
+  <div class="title"> FIFO</div>
   <div class="tag-badge">First In, First Out</div>
   <p>Expulsa la línea que <strong>llegó primero</strong>.
      Simple (buffer circular). Puede sufrir Anomalía de Bélády.</p>
@@ -1325,7 +1326,7 @@ luego los pongo a prueba con un ejercicio en tiempo real."
 </div>
 
 <div class="algo-card">
-  <div class="title">📉 LFU</div>
+  <div class="title"> LFU</div>
   <div class="tag-badge">Least Frequently Used</div>
   <p>Expulsa la línea con <strong>menos referencias</strong>
      acumuladas. Usa contador por línea.</p>
@@ -1333,7 +1334,7 @@ luego los pongo a prueba con un ejercicio en tiempo real."
 </div>
 
 <div class="algo-card">
-  <div class="title">🎲 RAND</div>
+  <div class="title"> RAND</div>
   <div class="tag-badge">Aleatorio</div>
   <p>Selección <strong>aleatoria</strong>. Sorprendentemente
      cerca de LRU en práctica (Smith, 1982).</p>
@@ -1386,7 +1387,7 @@ el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
 <div style="border:2px solid #2980b9; border-radius:8px; padding:12px;
             font-size:0.62em; background:#0d1e30;">
   <div style="color:#2980b9; font-weight:700; font-size:1.3em; margin-bottom:6px;">
-    📝 Write-Through
+     Write-Through
   </div>
   <p>Cada escritura actualiza <strong>caché Y RAM simultáneamente</strong>.</p>
   <p style="color:#00b894;">✅ RAM siempre válida</p>
@@ -1409,7 +1410,7 @@ el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
 <div style="border:2px solid #d35400; border-radius:8px; padding:12px;
             font-size:0.62em; background:#0d1e30;">
   <div style="color:#e67e22; font-weight:700; font-size:1.3em; margin-bottom:6px;">
-    💾 Write-Back (Copy-Back)
+     Write-Back (Copy-Back)
   </div>
   <p>Escribe <strong>solo en caché</strong>. Marca línea con
      <em>Dirty Bit</em>. Escribe a RAM solo al expulsar la línea.</p>
@@ -1532,7 +1533,7 @@ instrucciones y datos no compiten."
 # ============================================================
 #  DIAPOSITIVA 26 — INTRODUCCIÓN AL RETO
 # ============================================================
-* 🏆 El Reto Final
+*  El Reto Final
 :PROPERTIES:
 :reveal_background: #1a0505
 :reveal_extra_attr: style="font-size: 85%;"
@@ -1582,7 +1583,7 @@ instrucciones y datos no compiten."
 #+BEGIN_EXPORT html
 <div style="text-align:center; margin-top:14px; font-size:0.65em;
             background:#0d1e30; border-radius:8px; padding:10px;">
-  📋 <strong>Anoten en papel o abren una tabla:</strong>
+   <strong>Anoten en papel o abren una tabla:</strong>
   Ref | Marco 1 | Marco 2 | Marco 3 | Resultado<br/>
   Tienen <strong style="color:#f0c040;">3 minutos</strong> para resolverlo.
   La solución aparece en la siguiente diapositiva.
@@ -1605,7 +1606,7 @@ Al finalizar los 3 minutos: "¿Cuántos tuvieron más de 2 aciertos?
 # ============================================================
 #  DIAPOSITIVA 27 — SOLUCIÓN DEL RETO
 # ============================================================
-* 🎯 Solución del Reto — FIFO con 3 Marcos
+*  Solución del Reto — FIFO con 3 Marcos
 :PROPERTIES:
 :reveal_background: #0a0f1e
 :END:
@@ -1726,7 +1727,7 @@ Al finalizar los 3 minutos: "¿Cuántos tuvieron más de 2 aciertos?
     Hit Ratio: <span class="verde">1/7 ≈ 14.3%</span>
   </div>
   <div class="concepto-box warn">
-    ⚠️ <strong>FIFO no considera uso reciente.</strong>
+     <strong>FIFO no considera uso reciente.</strong>
     Con LRU, la ref. 1 (paso 6) podría haberse protegido
     por ser reciente → posiblemente mejor hit ratio.
   </div>
@@ -1766,11 +1767,11 @@ Preguntar: "¿Ven por qué LRU generalmente supera a FIFO?"
 #+END_EXPORT
 
 #+ATTR_REVEAL: :frag (appear appear appear appear appear)
-1. 🎯 El *Principio de Localidad* (temporal y espacial) hace posible toda la jerarquía de memoria
-2. 🏗️ La jerarquía balancea *velocidad, costo y capacidad* — sin ella el CPU esperaría casi todo el tiempo
-3. ⚡ La caché es transparente al programador pero crítica para el rendimiento — su diseño determina el *hit ratio*
-4. 🔀 *Asociativo por conjuntos* es el mejor compromiso: casi tan flexible como el asociativo puro, casi tan simple como el directo
-5. 📝 *Write-back* minimiza tráfico de bus; *Write-through* maximiza coherencia. Los diseñadores modernos usan ambos en distintos niveles
+1.  El *Principio de Localidad* (temporal y espacial) hace posible toda la jerarquía de memoria
+2.  La jerarquía balancea *velocidad, costo y capacidad* — sin ella el CPU esperaría casi todo el tiempo
+3.  La caché es transparente al programador pero crítica para el rendimiento — su diseño determina el *hit ratio*
+4.  *Asociativo por conjuntos* es el mejor compromiso: casi tan flexible como el asociativo puro, casi tan simple como el directo
+5.  *Write-back* minimiza tráfico de bus; *Write-through* maximiza coherencia. Los diseñadores modernos usan ambos en distintos niveles
 
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
