@@ -5,8 +5,8 @@
 #+options: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
 #+title: Notas de Clase — Estructura del Sistema de Memoria y Memoria Caché
 #+date: 2026-06-27
-#+author: Grupo 4
-#+email: grupo4@epn.edu.ec
+#+author: Grupo 3
+#+email: grupo3@epn.edu.ec
 #+language: Español
 #+select_tags: export
 #+exclude_tags: noexport
@@ -60,9 +60,9 @@ Referencias bibliográficas:
 
 * 2026-06-27 Principio de Localidad de Referencia
 ** Preguntas y Términos clave (Cue):
-- ¿Qué es el principio de localidad? ::
-- Localidad temporal ::
-- Localidad espacial ::
+- ¿Qué es el principio de localidad? :: 
+- Localidad temporal :: 
+- Localidad espacial :: 
 - ¿Por qué los programas exhiben localidad? ::
 - ¿Cómo explota la caché cada tipo de localidad? ::
 - Denning (1972) ::
@@ -71,62 +71,61 @@ Referencias bibliográficas:
 
 ** Notas (Notes):
 - *Principio de Localidad de Referencia* [Stallings, p. 135]:
-  Durante la ejecución de un programa, las referencias a memoria
-  por el procesador —instrucciones y datos— tienden a agruparse
-  (clustering). No todas las posiciones de memoria son igual de
-  probables en un momento dado.
-- Denning (1972) formuló tres afirmaciones formales [Stallings, p. 136]:
-  1. Las referencias son *no uniformes*: algunas posiciones son mucho
-     más accedidas que otras.
-  2. La distribución de probabilidad de referencias cambia *lentamente*
-     con el tiempo.
-  3. Hay *alta correlación* entre el pasado inmediato y el futuro
-     inmediato; la correlación decrece al aumentar el intervalo de tiempo.
-- ¿Por qué ocurre? Razones estructurales de los programas:
-  - La ejecución es mayormente *secuencial* (excepto saltos y llamadas).
-  - Los programas permanecen en una *ventana estrecha* de profundidad de
-    invocación de procedimientos.
-  - Los bucles iterativos repiten un conjunto pequeño de instrucciones.
-  - El procesamiento de estructuras de datos (arrays, listas) accede a
-    posiciones contiguas.
+  Durante la ejecución de un programa, las referencias a memoria no se
+  realizan de forma aleatoria, sino que tienden a concentrarse en un
+  pequeño grupo de datos e instrucciones utilizados con mayor frecuencia.
+
+- *Denning (1972)* [Stallings, p. 136]:
+  Denning explicó que las referencias a memoria no son uniformes,
+  cambian lentamente con el tiempo y los accesos recientes permiten
+  predecir los accesos que ocurrirán en el futuro cercano.
+
+- *¿Por qué los programas exhiben localidad?* ::
+  Los programas presentan localidad porque ejecutan instrucciones de
+  manera secuencial, utilizan bucles que repiten operaciones y acceden
+  continuamente a estructuras de datos almacenadas en posiciones
+  consecutivas de memoria.
+
 - *Localidad Temporal* [Stallings, p. 136]:
-  - Definición :: Si la posición $x$ fue accedida en el tiempo $t$, es
-    probable que vuelva a ser accedida en un tiempo cercano a $t$.
-  - Ejemplos: variable de contador en un bucle ~for~, constantes,
-    pilas de trabajo, subrutinas llamadas repetidamente.
-  - Explotación en caché :: Mantener instrucciones y datos *recientemente
-    usados* en caché; usar jerarquía de múltiples niveles (L1→L2→L3).
+  - Definición :: Un dato o instrucción utilizado recientemente tiene
+    una alta probabilidad de volver a utilizarse en poco tiempo.
+  - Ejemplos :: Variables de un bucle, contadores, constantes y
+    funciones llamadas repetidamente.
+  - Explotación en caché :: La caché conserva los datos e instrucciones
+    usados recientemente para acelerar futuros accesos.
+
 - *Localidad Espacial* [Stallings, p. 136]:
-  - Definición :: Si la posición $x$ es accedida en $t$, es probable que
-    las posiciones $x-k$ a $x+k$ sean accedidas pronto (k pequeño).
-  - Ejemplos: acceso secuencial a arrays, fetch de instrucciones
-    consecutivas, registros de estructuras de datos.
-  - Explotación en caché :: Transferir *bloques completos* (no palabras
-    sueltas); usar *prefetching* (precarga anticipada de bloques).
-- Distinción estática vs. dinámica [Stallings, p. 139]:
-  - Instrucción *estática* :: una instrucción que existe en el código.
-  - Instrucción *dinámica* :: aparición de esa instrucción en la traza
-    de ejecución (puede ocurrir 0 o miles de veces).
-  - La Fig. 4.5 (Stallings p. 140) muestra que pocas subrutinas
-    concentran la gran mayoría de las instrucciones dinámicas →
-    fuerte localidad de instrucciones.
-- Analogía del Escritorio [Stallings, p. 137, Fig. 4.1]:
-  - Escritorio (~5 carpetas) \rightarrow Caché
-  - Archivero en la sala siguiente (~500 carpetas) \rightarrow RAM
-  - Biblioteca externa (miles) \rightarrow Disco
-  - Retener lo que ya usé \rightarrow localidad temporal
-  - Traer carpetas vecinas al ir al archivero \rightarrow localidad espacial
-- TODO :: Revisar Fig. 4.2 y Fig. 4.3 (Stallings) sobre distribuciones
-  de probabilidad de localidad temporal y espacial.
+  - Definición :: Cuando se accede a una dirección de memoria, es muy
+    probable que también se utilicen las posiciones cercanas.
+  - Ejemplos :: Recorrido de arreglos, ejecución secuencial de
+    instrucciones y acceso a estructuras de datos.
+  - Explotación en caché :: La caché carga bloques completos de memoria
+    y utiliza prefetching para anticipar futuros accesos.
+
+- *Instrucción estática vs. dinámica* [Stallings, p. 139]:
+  - Instrucción *estática* :: Es la instrucción escrita en el programa.
+  - Instrucción *dinámica* :: Es cada ejecución de esa instrucción
+    durante el funcionamiento del programa.
+
+- *Prefetching* ::
+  Técnica que permite cargar anticipadamente bloques de datos o
+  instrucciones en la caché antes de que el procesador los solicite,
+  reduciendo el tiempo de acceso.
+
+- *Analogía del Escritorio* [Stallings, p. 137]:
+  El escritorio representa la caché, el archivero la memoria RAM y la
+  biblioteca el disco. Mantener los documentos usados recientemente
+  representa la localidad temporal, mientras que traer documentos
+  cercanos representa la localidad espacial.
 
 ** Resumen (Summary):
-El principio de localidad de referencia establece que los programas
-acceden a la memoria de manera no uniforme y predecible: tienden a
-reutilizar las mismas posiciones (/localidad temporal/) y a acceder a
-posiciones contiguas (/localidad espacial/). Esto ocurre por la naturaleza
-secuencial de la ejecución, los bucles iterativos y el acceso a
-estructuras de datos. Sin este principio, la jerarquía de memoria
-(y la caché) no tendría ninguna utilidad práctica.
+El principio de localidad de referencia indica que los programas
+acceden a la memoria de forma predecible, reutilizando datos e
+instrucciones recientes (localidad temporal) y accediendo a posiciones
+de memoria cercanas (localidad espacial). Este comportamiento se debe a
+la ejecución secuencial, los bucles y el uso de estructuras de datos,
+permitiendo que la memoria caché mejore significativamente el
+rendimiento del sistema.
 
 
 * 2026-06-27 Características de los Sistemas de Memoria y Jerarquía
