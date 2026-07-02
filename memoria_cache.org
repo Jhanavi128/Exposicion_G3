@@ -1,20 +1,7 @@
-# -*- coding: utf-8 -*-
-# ============================================================
-#  ARCHIVO        : memoria_cache.org
-#  PRESENTACIÓN   : Estructura del Sistema de Memoria y Caché
-#  MATERIA        : Arquitectura de Computadores
-#  REFERENCIA     : Stallings, W. (2022). Computer Organization
-#                   and Architecture, 11ª Ed., Caps. 4, 5 y 6.
-#  HERRAMIENTA    : org-re-reveal + reveal.js 4.5
-#  EXPORTAR CON   : M-x org-re-reveal-export-to-html
-#  MODO ORADOR    : Presionar 'S' durante la presentación
-#  NAVEGACIÓN     : → siguiente  |  ↓ sub-diap  |  S notas
-# ============================================================
-
 #+TITLE: Estructura del Sistema de Memoria y Memoria Caché
 #+SUBTITLE: Arquitectura de Computadores · Stallings 11ª Ed. · Caps. 4–6
 #+AUTHOR: Grupo 3 — Arquitectura de Computadores
-#+DATE: Junio 2026
+#+DATE: 2026-07-01
 #+OPTIONS: toc:nil num:nil timestamp:nil
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@4.5.0
 #+REVEAL_THEME: night
@@ -48,7 +35,7 @@
 <table style="width:80%; margin:0 auto; font-size:0.60em; color:#ccc; text-align:center;">
   <tr>
     <td> Sagñay Micaela<br/><strong style="color:#f0c040;">Rompehielo &amp; Localidad</strong></td>
-    <td>📐 Integrante 2<br/><strong style="color:#7ecfff;">Características &amp; Jerarquía</strong></td>
+    <td> Damian Haro<br/><strong style="color:#7ecfff;">Características &amp; Jerarquía</strong></td>
     <td> Molina Jhanavi<br/><strong style="color:#a8e6cf;">Principios de Caché</strong></td>
     <td> Anthonny Almeida<br/><strong style="color:#ff7675;">Políticas &amp; Reto</strong></td>
   </tr>
@@ -379,11 +366,6 @@ for (i = 0; i &lt; N; i++) {
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 2 — PORTADA FASE 2 (10 s)
-Presentarse y conectar: "Ahora que entendemos por qué la localidad
-importa, veamos CÓMO organizamos la memoria para explotarla."
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 10 — CARACTERÍSTICAS CLAVE
@@ -408,7 +390,7 @@ importa, veamos CÓMO organizamos la memoria para explotarla."
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
 <div class="concepto-box" style="flex:1; min-width:140px;">
-  <strong style="color:#7ecfff;">📍 Ubicación</strong><br/>
+  <strong style="color:#7ecfff;"> Ubicación</strong><br/>
   <em>Interna:</em> Registros, Caché, RAM<br/>
   <em>Externa:</em> Disco, Cinta (vía I/O)
 </div>
@@ -417,7 +399,7 @@ importa, veamos CÓMO organizamos la memoria para explotarla."
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
 <div class="concepto-box" style="flex:1; min-width:140px;">
-  <strong style="color:#7ecfff;">📦 Capacidad</strong><br/>
+  <strong style="color:#7ecfff;"> Capacidad</strong><br/>
   Interna: bytes o palabras<br/>
   Externa: megabytes / terabytes
 </div>
@@ -426,7 +408,7 @@ importa, veamos CÓMO organizamos la memoria para explotarla."
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
 <div class="concepto-box" style="flex:1; min-width:140px;">
-  <strong style="color:#7ecfff;">🔄 Unidad de Transferencia</strong><br/>
+  <strong style="color:#7ecfff;"> Unidad de Transferencia</strong><br/>
   Interna: <em>word</em> (32/64 bits)<br/>
   Externa: <em>bloques</em> (sectores)
 </div>
@@ -435,7 +417,7 @@ importa, veamos CÓMO organizamos la memoria para explotarla."
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
 <div class="concepto-box" style="flex:1; min-width:140px;">
-  <strong style="color:#7ecfff;">⏱️ Rendimiento</strong><br/>
+  <strong style="color:#7ecfff;"> Rendimiento</strong><br/>
   Tiempo de acceso<br/>
   Tiempo de ciclo<br/>
   Tasa de transferencia
@@ -455,17 +437,6 @@ importa, veamos CÓMO organizamos la memoria para explotarla."
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 2 — ~2 min
-Ir revelando cada caja y explicar brevemente:
-- Ubicación: "Los registros son internos al CPU, el disco es externo."
-- Capacidad: "Más capacidad → más lento y más barato por bit."
-- Unidad de transferencia: "La caché no te da un solo byte, te da un
-  bloque completo — típicamente 64 bytes."
-- Rendimiento: Destacar que hay DOS tiempos: acceso y ciclo.
-- Volátil/No volátil: "La RAM pierde todo al apagar, el disco no."
-Preguntar al público: "¿La RAM es volátil o no volátil?"
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 11 — MÉTODOS DE ACCESO
@@ -491,7 +462,7 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 #+BEGIN_EXPORT html
 <div style="background:#0d1e30; border:2px solid #8e44ad; border-radius:8px;
             padding:10px 14px; flex:1; min-width:130px;">
-  <div style="font-size:1.6em; text-align:center;">📼</div>
+  <div style="font-size:1.6em; text-align:center;"></div>
   <div style="color:#8e44ad; font-weight:700; text-align:center;">Secuencial</div>
   <hr style="border-color:#2a2a4a;"/>
   <p>Acceso en <strong>orden lineal</strong> estricto. Tiempo variable.</p>
@@ -503,7 +474,7 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 #+BEGIN_EXPORT html
 <div style="background:#0d1e30; border:2px solid #2980b9; border-radius:8px;
             padding:10px 14px; flex:1; min-width:130px;">
-  <div style="font-size:1.6em; text-align:center;">💿</div>
+  <div style="font-size:1.6em; text-align:center;"></div>
   <div style="color:#2980b9; font-weight:700; text-align:center;">Directo</div>
   <hr style="border-color:#1a3a5a;"/>
   <p>Cabezal va a <strong>vecindad</strong> y luego busca. Tiempo variable.</p>
@@ -515,7 +486,7 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 #+BEGIN_EXPORT html
 <div style="background:#0d1e30; border:2px solid #27ae60; border-radius:8px;
             padding:10px 14px; flex:1; min-width:130px;">
-  <div style="font-size:1.6em; text-align:center;">🧠</div>
+  <div style="font-size:1.6em; text-align:center;"></div>
   <div style="color:#27ae60; font-weight:700; text-align:center;">Aleatorio</div>
   <hr style="border-color:#1a3a5a;"/>
   <p>Cada dirección tiene mecanismo propio. Tiempo <strong>constante</strong>.</p>
@@ -527,7 +498,7 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 #+BEGIN_EXPORT html
 <div style="background:#0d1e30; border:2px solid #f0c040; border-radius:8px;
             padding:10px 14px; flex:1; min-width:130px;">
-  <div style="font-size:1.6em; text-align:center;">🔍</div>
+  <div style="font-size:1.6em; text-align:center;"></div>
   <div style="color:#f0c040; font-weight:700; text-align:center;">Asociativo</div>
   <hr style="border-color:#3a3a1a;"/>
   <p>Búsqueda por <strong>contenido</strong>, no por dirección. Tiempo constante.</p>
@@ -539,19 +510,6 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 2 — ~2 min
-Usar la analogía del archivero para cada tipo:
-- Secuencial: "Como buscar en una cinta VHS — tienes que avanzar."
-- Directo: "Como un tocadiscos — el brazo va al surco aproximado,
-  luego gira el disco hasta encontrar exactamente lo que quieres."
-- Aleatorio: "Como el escritorio de Bob — cada posición tiene su
-  dirección exacta. 0 tiempo extra de posicionamiento."
-- Asociativo: "¿Tienes la carpeta con el contrato de Empresa X?
-  No sabes dónde está, pero la describes y el sistema la encuentra."
-Preguntar: "¿Qué método usa la RAM?" → Aleatorio.
-"¿Y la caché?" → Aleatorio o Asociativo.
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 12 — TIEMPO DE ACCESO VS CICLO
@@ -568,9 +526,9 @@ Preguntar: "¿Qué método usa la RAM?" → Aleatorio.
 #+END_EXPORT
 
 #+ATTR_REVEAL: :frag (appear appear appear)
-- 📏 *Tiempo de Acceso* ($T_A$): tiempo desde que se presenta la dirección hasta que el dato está disponible
-- 🔄 *Tiempo de Ciclo* ($T_C$): $T_A$ + tiempo extra de recuperación. Es el mínimo tiempo entre dos accesos consecutivos ($T_C \geq T_A$)
-- 📡 *Tasa de Transferencia* ($R$): para RAM $= 1/T_C$ ; para no-RAM: $T_n = T_A + n/R$
+- *Tiempo de Acceso* ($T_A$): tiempo desde que se presenta la dirección hasta que el dato está disponible
+- *Tiempo de Ciclo* ($T_C$): $T_A$ + tiempo extra de recuperación. Es el mínimo tiempo entre dos accesos consecutivos ($T_C \geq T_A$)
+- *Tasa de Transferencia* ($R$): para RAM $= 1/T_C$ ; para no-RAM: $T_n = T_A + n/R$
 
 #+BEGIN_EXPORT html
 </div>
@@ -600,15 +558,7 @@ Preguntar: "¿Qué método usa la RAM?" → Aleatorio.
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 2 — ~1.5 min
-Dar el ejemplo concreto: "Si la RAM tiene T_A = 60 ns y necesita
-10 ns extra para regenerar, T_C = 70 ns. Aunque el dato llegó en
-60 ns, no puedes hacer otro acceso hasta que pasen 70 ns."
-La fórmula de tasa de transferencia para no-RAM es importante:
-"Si transferimos n=128 bits, T_A = 20 ms, R = 2 Mbps en una cinta:
-T_128 = 20ms + 128/(2×10^6) = 20ms + 0.064ms"
-#+END_NOTES
+
 
 # ============================================================
 #  DIAPOSITIVA 13 — LA PIRÁMIDE DE JERARQUÍA (DINÁMICA)
@@ -630,7 +580,7 @@ T_128 = 20ms + 128/(2×10^6) = 20ms + 0.064ms"
 
   <!-- Registros — aparece ÚLTIMO (idx=7) -->
   <div class="fragment p-reg" data-fragment-index="7">
-    <span>⚡ Registros del CPU</span>
+    <span> Registros del CPU</span>
     <span class="right-info">~0.3 ns | bytes | Compilador</span>
   </div>
 
@@ -677,23 +627,6 @@ T_128 = 20ms + 128/(2×10^6) = 20ms + 0.064ms"
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 2 — ~3 min  ← DIAPOSITIVA CENTRAL DE ESTA FASE
-DINÁMICA: Construir la pirámide interactuando con el público.
-ANTES de hacer clic, preguntar a la clase:
-  "¿Cuál es el nivel más lento y con más capacidad?"  → clic → Cinta
-  "¿Qué viene por encima?" → clic → Disco
-  "¿Y el almacenamiento más rápido que existe sin RAM?" → clic → SSD
-  "¿La memoria que ve directamente el programa?" → clic → RAM
-  "¿El primer nivel de caché?" → clic → L2/L3
-  "El más cercano al CPU..." → clic → L1
-  "¡Lo más rápido de todo!" → clic → Registros
-Al final: "Cada nivel hacia arriba es ~10x más rápido y ~10x más
-caro por bit. La clave es que el S.O. y el hardware mueven los datos
-AUTOMÁTICAMENTE entre niveles según el principio de localidad."
-Mencionar IBM z13 (Stallings p. 148-149) como ejemplo real: tiene 4
-niveles de caché (L1=96kB, L2=2MB, L3=64MB, L4=480MB eDRAM).
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 14 — HIT RATIO Y RENDIMIENTO
@@ -732,31 +665,18 @@ T₁ = 0.01 µs (caché) &nbsp;&nbsp;|&nbsp;&nbsp; T₂ = 0.1 µs (RAM) &nbsp;&n
 T_s = 0.01 + (1 − 0.95) × 0.1
     = 0.01 + 0.005
     = <strong style="color:#a8e6cf;">0.015 µs</strong>
-    (mucho más cerca de 0.01 que de 0.1 ✅)
+    (mucho más cerca de 0.01 que de 0.1 )
 </div>
 #+END_EXPORT
 
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
 <div class="concepto-box warn" style="margin-top:8px; font-size:0.68em;">
-  💡 Con H ≈ 0.9–0.95, el tiempo promedio es <strong>casi igual al
+   Con H ≈ 0.9–0.95, el tiempo promedio es <strong>casi igual al
   tiempo del nivel más rápido</strong>. Esto es lo que hace útil la caché.
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 2 — ~2 min
-Trabajar el ejemplo numérico en voz alta:
-"Si el 95% de los accesos los encontramos en caché (H=0.95),
-pagamos T1=0.01µs. El 5% restante lo pagamos con T1+T2=0.11µs.
-Promedio: 0.015µs. ¡Casi tan rápido como la caché pura!"
-Preguntar: "¿Qué pasaría si H=0.5? El sistema sería mucho más
-lento. Por eso necesitamos alta H."
-"¿Y cómo logramos alta H? Con el principio de localidad. Todo
-conecta."
-CIERRE FASE 2: "Ahora [Nombre 3] nos explica cómo funciona
-POR DENTRO la memoria caché."
-#+END_NOTES
 
 # ============================================================
 #  ══════════════════════════════════════════════════════════
@@ -886,7 +806,7 @@ POR DENTRO la memoria caché."
 #+ATTR_REVEAL: :frag appear
 #+BEGIN_EXPORT html
 <div class="concepto-box" style="font-size:0.75em; margin-top:8px;">
-  💡 <strong>Critical Word First</strong> (Stallings p. 164):<br/>
+   <strong>Critical Word First</strong> (Stallings p. 164):<br/>
   El hardware solicita primero la palabra faltante y la envía
   al CPU sin esperar que se cargue toda la línea.
 </div>
@@ -1204,11 +1124,7 @@ POR DENTRO la memoria caché."
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 4 — PORTADA FASE 4 (10 s)
-Presentarse: "Voy a cubrir las últimas decisiones de diseño y
-luego los pongo a prueba con un ejercicio en tiempo real."
-#+END_NOTES
+
 
 # ============================================================
 #  DIAPOSITIVA 23 — ALGORITMOS DE SUSTITUCIÓN
@@ -1268,21 +1184,7 @@ luego los pongo a prueba con un ejercicio en tiempo real."
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 4 — ~2 min
-Explicar cada algoritmo brevemente:
-LRU: "Razona: si no lo usé recientemente, probablemente no lo
-necesite. Para 2-way es trivial: 1 bit por línea."
-FIFO: "El primero en entrar es el primero en salir. Como una cola.
-La anomalía de Bélády es un fenómeno curioso: más caché puede dar
-PEOR hit ratio con FIFO (no con LRU)."
-LFU: "Cuenta referencias. Problema: una línea muy usada al inicio
-nunca se expulsa aunque ya no la uses."
-RAND: "¡Funciona sorprendentemente bien! Smith (1982) mostró que
-es solo ligeramente inferior a LRU. Y el hardware es trivial."
-Pregunta al público: "¿Cuál usarían para la L1 del CPU si
-el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
-#+END_NOTES
+
 
 # ============================================================
 #  DIAPOSITIVA 24 — POLÍTICA DE ESCRITURA
@@ -1312,10 +1214,10 @@ el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
      Write-Through
   </div>
   <p>Cada escritura actualiza <strong>caché Y RAM simultáneamente</strong>.</p>
-  <p style="color:#00b894;">✅ RAM siempre válida</p>
-  <p style="color:#00b894;">✅ Coherencia simple entre cachés</p>
-  <p style="color:#d63031;">❌ Genera tráfico de bus constante</p>
-  <p style="color:#d63031;">❌ Posible cuello de botella</p>
+  <p style="color:#00b894;"> RAM siempre válida</p>
+  <p style="color:#00b894;"> Coherencia simple entre cachés</p>
+  <p style="color:#d63031;"> Genera tráfico de bus constante</p>
+  <p style="color:#d63031;"> Posible cuello de botella</p>
   <p style="color:#aaa; font-size:0.9em; margin-top:6px;">
     Usado en: IBM z13 L1 y L2 (Stallings p. 190)
   </p>
@@ -1336,10 +1238,10 @@ el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
   </div>
   <p>Escribe <strong>solo en caché</strong>. Marca línea con
      <em>Dirty Bit</em>. Escribe a RAM solo al expulsar la línea.</p>
-  <p style="color:#00b894;">✅ Mínimo tráfico de bus</p>
-  <p style="color:#00b894;">✅ Mejor rendimiento general</p>
-  <p style="color:#d63031;">❌ RAM puede estar desactualizada</p>
-  <p style="color:#d63031;">❌ Coherencia compleja</p>
+  <p style="color:#00b894;"> Mínimo tráfico de bus</p>
+  <p style="color:#00b894;"> Mejor rendimiento general</p>
+  <p style="color:#d63031;"> RAM puede estar desactualizada</p>
+  <p style="color:#d63031;"> Coherencia compleja</p>
   <p style="color:#aaa; font-size:0.9em; margin-top:6px;">
     Usado en: IBM z13 L3 y L4 (Stallings p. 191)
   </p>
@@ -1362,21 +1264,7 @@ el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 4 — ~2.5 min
-Usar la analogía del cuaderno de borrador (caché) vs. el libro
-oficial (RAM):
-"Write-Through: cada vez que escribes algo en tu borrador,
-inmediatamente copias exactamente lo mismo al libro oficial.
-El libro SIEMPRE está al día."
-"Write-Back: escribes en el borrador con un post-it de 'sucio'.
-Solo pasas al libro oficial cuando necesitas ese espacio del borrador."
-El ejemplo numérico: "Si la línea se escribe solo 1 vez antes de
-expulsarse, Write-Back = 240 ns, Write-Through = 30 ns → WT gana.
-Si se escribe 9 veces: WB = 240 ns, WT = 270 ns → WB gana."
-Mencionar IBM z13: L1 y L2 usan WT (porque tienen alta velocidad
-hacia L3), L3 y L4 usan WB (tráfico hacia RAM más costoso).
-#+END_NOTES
+
 
 # ============================================================
 #  DIAPOSITIVA 25 — TAMAÑO DE LÍNEA Y Nº DE CACHÉS
@@ -1402,8 +1290,8 @@ hacia L3), L3 y L4 usan WB (tráfico hacia RAM más costoso).
 #+END_EXPORT
 
 #+ATTR_REVEAL: :frag (appear appear)
-- 🔼 Línea *grande*: más datos útiles por miss, menos líneas totales
-- 🔽 Línea *pequeña*: menos desperdicio, más líneas disponibles
+- Línea *grande*: más datos útiles por miss, menos líneas totales
+- Línea *pequeña*: menos desperdicio, más líneas disponibles
 
 #+BEGIN_EXPORT html
 </div>
@@ -1439,18 +1327,6 @@ hacia L3), L3 y L4 usan WB (tráfico hacia RAM más costoso).
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 4 — ~2 min
-Tamaño de línea: "Si la línea es muy pequeña, el principio de
-localidad espacial no se aprovecha. Si es muy grande, trae datos
-que nunca usarás y cada miss tarda más. 64 bytes es el estándar
-en Intel y AMD modernos."
-Split cache: "La razón es el pipeline. Cuando el CPU está ejecutando
-instrucción N y al mismo tiempo precarga instrucción N+1, necesita
-acceder a la I-cache. Si hay una sola caché y la instrucción N
-también lee datos en ese ciclo, hay CONTENCIÓN. Con cachés separadas,
-instrucciones y datos no compiten."
-#+END_NOTES
 
 # ============================================================
 #  DIAPOSITIVA 26 — INTRODUCCIÓN AL RETO
@@ -1512,18 +1388,7 @@ instrucciones y datos no compiten."
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 4 — ~1 min de explicación + 3 min que resuelve la clase
-Leer los parámetros claramente y asegurarse de que todos entendieron:
-"3 marcos = 3 espacios en caché. Empieza vacía. FIFO significa:
-cuando necesito expulsar, saco el que entró PRIMERO."
-"¿Alguien recuerda FIFO de Sistemas Operativos?"
-Iniciar timer visible (usar el teléfono o timer online).
-Caminar por la clase, ayudar si alguien está perdido pero NO dar
-la respuesta. Estimular discusión entre pares.
-Al finalizar los 3 minutos: "¿Cuántos tuvieron más de 2 aciertos?
-¿Alguien llegó a 3?" → luego avanzar a la solución.
-#+END_NOTES
+
 
 # ============================================================
 #  DIAPOSITIVA 27 — SOLUCIÓN DEL RETO
@@ -1656,23 +1521,7 @@ Al finalizar los 3 minutos: "¿Cuántos tuvieron más de 2 aciertos?
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-INTEGRANTE 4 — ~3 min
-Revelar la tabla fila por fila, explicando cada decisión:
-Ref 1: "Fallo — caché vacía, cargamos 1. Cola FIFO: [1]"
-Ref 2: "Fallo — aún hay espacio, cargamos 2. Cola: [1,2]"
-Ref 3: "Fallo — último espacio, cargamos 3. Cola: [1,2,3]"
-Ref 1: "ACIERTO — 1 ya está en caché. Cola sin cambio: [1,2,3]"
-Ref 4: "Fallo — caché llena. FIFO expulsa al PRIMERO EN ENTRAR:
-  el bloque 1 (entró primero). Cola: [2,3,4]. ¡Pero ahora si
-  necesitamos el 1 de nuevo, habrá fallo!"
-Ref 1: "Fallo — 1 fue expulsado. Cargamos 1, expulsamos 2."
-Ref 2: "Fallo — 2 fue expulsado. Cargamos 2, expulsamos 3."
-Resaltar la paradoja: "El bloque 1 que acabábamos de usar en el
-paso 4 fue expulsado en el paso 5. LRU habría expulsado a 3
-(el menos recientemente usado) y el paso 6 habría sido acierto."
-Preguntar: "¿Ven por qué LRU generalmente supera a FIFO?"
-#+END_NOTES
+
 
 # ============================================================
 #  DIAPOSITIVA 28 — CONCLUSIONES
@@ -1705,16 +1554,7 @@ Preguntar: "¿Ven por qué LRU generalmente supera a FIFO?"
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-CUALQUIER INTEGRANTE puede cerrar — se recomienda el Integrante 1 o 4.
-Leer cada conclusión y conectarla con lo visto:
-1 → "Localidad: base de todo. Sin ella, el caché no sirve."
-2 → "La pirámide: velocidad ↑ = costo ↑ = capacidad ↓."
-3 → "La caché no la ves en C++, pero afecta tu código enormemente."
-4 → "Los chips de hoy: 4-way, 8-way, 16-way según el nivel."
-5 → "IBM z13: WT en L1/L2 por velocidad; WB en L3/L4 por eficiencia."
-Invitar preguntas.
-#+END_NOTES
+
 
 # ============================================================
 #  DIAPOSITIVA 29 — REFERENCIAS
@@ -1768,9 +1608,4 @@ Invitar preguntas.
 </div>
 #+END_EXPORT
 
-#+BEGIN_NOTES
-Agradecer al público. Abrir espacio para preguntas.
-Si queda tiempo, invitar a explorar los simuladores interactivos
-referenciados en el libro (Stallings hace referencia a simuladores
-en línea para Cache Mapping y FIFO/LRU).
-#+END_NOTES
+

@@ -1,239 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8"/>
 <title>Estructura del Sistema de Memoria y Memoria Caché</title>
-<meta name="author" content="Grupo 3 — Arquitectura de Computadores" />
-<meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
+<meta name="author" content="Grupo 3 — Arquitectura de Computadores"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
 </style>
-<script>
-  window.MathJax = {
-    tex: {
-      ams: {
-        multlineWidth: '85%'
-      },
-      tags: 'ams',
-      tagSide: 'right',
-      tagIndent: '.8em'
-    },
-    chtml: {
-      scale: 1.0,
-      displayAlign: 'center',
-      displayIndent: '0em'
-    },
-    svg: {
-      scale: 1.0,
-      displayAlign: 'center',
-      displayIndent: '0em'
-    },
-    output: {
-      font: 'mathjax-modern',
-      displayOverflow: 'overflow'
-    }
-  };
-</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css"/>
 
-<script
-  id="MathJax-script"
-  async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/night.css" id="theme"/>
+
+<link rel="stylesheet" href="./custom.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/zenburn.css"/>
+<meta name="description" content="Memoria y Caché — Arquitectura de Computadores"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
-<div id="content" class="content">
-<h1 class="title">Estructura del Sistema de Memoria y Memoria Caché
-<br />
-<span class="subtitle">Arquitectura de Computadores · Stallings 11ª Ed. · Caps. 4–6</span>
-</h1>
-<div id="outline-container-org9bb5465" class="outline-2">
-<h2 id="org9bb5465">Estructura del Sistema de Memoria y Memoria Caché</h2>
-<div class="outline-text-2" id="text-org9bb5465">
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Estructura del Sistema de Memoria y Memoria Caché</h1><h2 class="author">Grupo 3 — Arquitectura de Computadores</h2><h2 class="date">2026-07-01</h2>
+</section>
+<section>
+<section id="slide-org4ff7e81" data-background="#0a0f1e" data-timing="15">
+<h2 id="org4ff7e81">Estructura del Sistema de Memoria y Memoria Caché</h2>
 <p style="font-size:0.8em; color:#7ecfff; margin:0;">
   Arquitectura de Computadores
 </p>
@@ -245,16 +36,16 @@
 <table style="width:80%; margin:0 auto; font-size:0.60em; color:#ccc; text-align:center;">
   <tr>
     <td> Sagñay Micaela<br/><strong style="color:#f0c040;">Rompehielo &amp; Localidad</strong></td>
-    <td>📐 Integrante 2<br/><strong style="color:#7ecfff;">Características &amp; Jerarquía</strong></td>
+    <td> Damian Haro<br/><strong style="color:#7ecfff;">Características &amp; Jerarquía</strong></td>
     <td> Molina Jhanavi<br/><strong style="color:#a8e6cf;">Principios de Caché</strong></td>
     <td> Anthonny Almeida<br/><strong style="color:#ff7675;">Políticas &amp; Reto</strong></td>
   </tr>
 </table>
-</div>
-</div>
-<div id="outline-container-org9a55d6c" class="outline-2">
-<h2 id="org9a55d6c">Hoja de Ruta</h2>
-<div class="outline-text-2" id="text-org9a55d6c">
+</section>
+</section>
+<section>
+<section id="slide-org8f06acd" data-background="#0a0f1e">
+<h2 id="org8f06acd">Hoja de Ruta</h2>
 <div style="display:flex; gap:14px; justify-content:center;
             flex-wrap:wrap; margin-top:10px;">
 
@@ -295,12 +86,11 @@
   </div>
 
 </div>
-</div>
-</div>
-
-<div id="outline-container-org113491c" class="outline-2">
-<h2 id="org113491c">FASE 1</h2>
-<div class="outline-text-2" id="text-org113491c">
+</section>
+</section>
+<section>
+<section id="slide-org9314ef4" data-background="linear-gradient(135deg, #1a0a00, #3d1500)">
+<h2 id="org9314ef4">FASE 1</h2>
 <div class="fase-header">
   <div class="numero">1</div>
   <h2 style="color:#f0c040; margin:8px 0 4px;">
@@ -311,20 +101,21 @@
   </p>
   <p class="integrante">Integrante 1 · Stallings Cap. 4, pp. 135–138</p>
 </div>
-</div>
-</div>
-<div id="outline-container-org404535a" class="outline-2">
-<h2 id="org404535a">¿Qué tan rápido es tu computadora?</h2>
-<div class="outline-text-2" id="text-org404535a">
+</section>
+</section>
+<section>
+<section id="slide-orgebb4427" data-background="#0a0f1e">
+<h2 id="orgebb4427">¿Qué tan rápido es tu computadora?</h2>
 <p style="color:#aaa; font-size:0.75em; margin-bottom:20px;">
   
 </p>
 
-<ul class="org-ul">
-<li>Un registro del CPU tarda <b>~0.3 ns</b> en operar</li>
-<li>La RAM tarda <b>~60–100 ns</b> en responder</li>
-<li>Un SSD NVMe tarda <b>~100.000 ns</b> (0.1 ms)</li>
-<li>Un disco duro tarda <b>~5.000.000 ns</b> (5 ms)</li>
+<ul>
+<li class="fragment appear">Un registro del CPU tarda <b>~0.3 ns</b> en operar</li>
+<li class="fragment appear">La RAM tarda <b>~60–100 ns</b> en responder</li>
+<li class="fragment appear">Un SSD NVMe tarda <b>~100.000 ns</b> (0.1 ms)</li>
+<li class="fragment appear">Un disco duro tarda <b>~5.000.000 ns</b> (5 ms)</li>
+
 </ul>
 
 <div class="concepto-box warn" style="margin-top:14px;">
@@ -332,18 +123,18 @@
   más lenta que los registros.<br/>
   Sin la caché, el procesador esperaría casi todo el tiempo.
 </div>
-</div>
-</div>
-<div id="outline-container-org0ff2637" class="outline-2">
-<h2 id="org0ff2637">El Juego: Escritorio, Archivero y Biblioteca</h2>
-<div class="outline-text-2" id="text-org0ff2637">
+</section>
+</section>
+<section>
+<section id="slide-org117dfd8" data-background="#0a0f1e">
+<h2 id="org117dfd8">El Juego: Escritorio, Archivero y Biblioteca</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:10px;">
   Analogía directa de Stallings Cap. 4, p. 137 — Fig. 4.1
 </p>
 <div class="col2">
   <div>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" class="fragment (appear appear appear)">
 
 
 <colgroup>
@@ -392,11 +183,11 @@
 
   </div>
 </div>
-</div>
-</div>
-<div id="outline-container-org7fa3ca1" class="outline-2">
-<h2 id="org7fa3ca1">Principio de Localidad de Referencia</h2>
-<div class="outline-text-2" id="text-org7fa3ca1">
+</section>
+</section>
+<section>
+<section id="slide-org6ee4ddd" data-background="#0a0f1e">
+<h2 id="org6ee4ddd">Principio de Localidad de Referencia</h2>
 <div class="concepto-box" style="margin-bottom:16px;">
   <strong>Definición (Stallings, p. 135):</strong><br/>
   Durante la ejecución de un programa, las referencias a memoria
@@ -408,13 +199,14 @@
 <div class="col2">
 <div>
 
-<p>
+<p class="fragment (appear appear appear)">
 <b>¿Por qué ocurre?</b>
 </p>
-<ul class="org-ul">
+<ul>
 <li>Bucles: mismas instrucciones una y otra vez</li>
 <li>Subrutinas: se invocan repetidamente</li>
 <li>Estructuras de datos: arrays accedidos secuencialmente</li>
+
 </ul>
 
 </div>
@@ -434,11 +226,11 @@
 
 </div>
 </div>
-</div>
-</div>
-<div id="outline-container-orgb44b54f" class="outline-2">
-<h2 id="orgb44b54f">Localidad Temporal</h2>
-<div class="outline-text-2" id="text-orgb44b54f">
+</section>
+</section>
+<section>
+<section id="slide-org780f099" data-background="#0a0f1e">
+<h2 id="org780f099">Localidad Temporal</h2>
 <div class="concepto-box temporal">
   <strong>Localidad Temporal</strong> (Stallings p. 136):<br/>
   Si una posición de memoria <code>x</code> fue referenciada en el
@@ -460,18 +252,19 @@ for (i = 0; i &lt; 1000; i++) {
 </p>
 </div>
 
-<p>
+<p class="fragment (appear appear)">
 <b>Cómo la explota la caché:</b>
 </p>
-<ul class="org-ul">
+<ul>
 <li>Mantiene instrucciones y datos <b>recientemente usados</b> en caché</li>
 <li>Organiza jerarquía de múltiples niveles (L1 → L2 → L3)</li>
+
 </ul>
-</div>
-</div>
-<div id="outline-container-org719dced" class="outline-2">
-<h2 id="org719dced">Localidad Espacial</h2>
-<div class="outline-text-2" id="text-org719dced">
+</section>
+</section>
+<section>
+<section id="slide-org23c1f9a" data-background="#0a0f1e">
+<h2 id="org23c1f9a">Localidad Espacial</h2>
 <div class="concepto-box espacial">
   <strong>Localidad Espacial</strong> (Stallings p. 136):<br/>
   Si la posición <code>x</code> es referenciada en el tiempo
@@ -495,19 +288,19 @@ for (i = 0; i &lt; N; i++) {
 </p>
 </div>
 
-<p>
+<p class="fragment (appear appear)">
 <b>Cómo la explota la caché:</b>
 </p>
-<ul class="org-ul">
+<ul>
 <li>Transfiere <b>bloques</b> completos (no palabras sueltas)</li>
 <li>Usa mecanismos de <b>prefetching</b> (precarga anticipada)</li>
-</ul>
-</div>
-</div>
 
-<div id="outline-container-org1859f32" class="outline-2">
-<h2 id="org1859f32">FASE 2</h2>
-<div class="outline-text-2" id="text-org1859f32">
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org847fd60" data-background="linear-gradient(135deg, #001a2a, #003060)">
+<h2 id="org847fd60">FASE 2</h2>
 <div class="fase-header">
   <div class="numero">2</div>
   <h2 style="color:#7ecfff; margin:8px 0 4px;">
@@ -518,20 +311,11 @@ for (i = 0; i &lt; N; i++) {
   </p>
   <p class="integrante">Integrante 2 · Stallings Cap. 4, pp. 141–156</p>
 </div>
-
-<div class="NOTES" id="orgbb260fc">
-<p>
-INTEGRANTE 2 — PORTADA FASE 2 (10 s)
-Presentarse y conectar: "Ahora que entendemos por qué la localidad
-importa, veamos CÓMO organizamos la memoria para explotarla."
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orgbf0bdd7" class="outline-2">
-<h2 id="orgbf0bdd7">Características de los Sistemas de Memoria</h2>
-<div class="outline-text-2" id="text-orgbf0bdd7">
+</section>
+</section>
+<section>
+<section id="slide-orgf7ba331" data-background="#0a0f1e">
+<h2 id="orgf7ba331">Características de los Sistemas de Memoria</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:8px;">
   Stallings, Tabla 4.1 — p. 141 — Dimensiones clave de clasificación
 </p>
@@ -540,25 +324,25 @@ importa, veamos CÓMO organizamos la memoria para explotarla."
             font-size:0.60em; margin:0 auto;">
 
 <div class="concepto-box" style="flex:1; min-width:140px;">
-  <strong style="color:#7ecfff;">📍 Ubicación</strong><br/>
+  <strong style="color:#7ecfff;"> Ubicación</strong><br/>
   <em>Interna:</em> Registros, Caché, RAM<br/>
   <em>Externa:</em> Disco, Cinta (vía I/O)
 </div>
 
 <div class="concepto-box" style="flex:1; min-width:140px;">
-  <strong style="color:#7ecfff;">📦 Capacidad</strong><br/>
+  <strong style="color:#7ecfff;"> Capacidad</strong><br/>
   Interna: bytes o palabras<br/>
   Externa: megabytes / terabytes
 </div>
 
 <div class="concepto-box" style="flex:1; min-width:140px;">
-  <strong style="color:#7ecfff;">🔄 Unidad de Transferencia</strong><br/>
+  <strong style="color:#7ecfff;"> Unidad de Transferencia</strong><br/>
   Interna: <em>word</em> (32/64 bits)<br/>
   Externa: <em>bloques</em> (sectores)
 </div>
 
 <div class="concepto-box" style="flex:1; min-width:140px;">
-  <strong style="color:#7ecfff;">⏱️ Rendimiento</strong><br/>
+  <strong style="color:#7ecfff;"> Rendimiento</strong><br/>
   Tiempo de acceso<br/>
   Tiempo de ciclo<br/>
   Tasa de transferencia
@@ -571,30 +355,11 @@ importa, veamos CÓMO organizamos la memoria para explotarla."
 </div>
 
 </div>
-
-<div class="NOTES" id="orgd6ee5af">
-<p>
-INTEGRANTE 2 — ~2 min
-Ir revelando cada caja y explicar brevemente:
-</p>
-<ul class="org-ul">
-<li>Ubicación: "Los registros son internos al CPU, el disco es externo."</li>
-<li>Capacidad: "Más capacidad → más lento y más barato por bit."</li>
-<li>Unidad de transferencia: "La caché no te da un solo byte, te da un
-bloque completo — típicamente 64 bytes."</li>
-<li>Rendimiento: Destacar que hay DOS tiempos: acceso y ciclo.</li>
-<li>Volátil/No volátil: "La RAM pierde todo al apagar, el disco no."</li>
-</ul>
-<p>
-Preguntar al público: "¿La RAM es volátil o no volátil?"
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org19f37b6" class="outline-2">
-<h2 id="org19f37b6">Métodos de Acceso a Memoria</h2>
-<div class="outline-text-2" id="text-org19f37b6">
+</section>
+</section>
+<section>
+<section id="slide-org1816ba3" data-background="#0a0f1e">
+<h2 id="org1816ba3">Métodos de Acceso a Memoria</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:6px;">
   Stallings p. 141 — El método determina el tiempo de acceso
 </p>
@@ -604,7 +369,7 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 
 <div style="background:#0d1e30; border:2px solid #8e44ad; border-radius:8px;
             padding:10px 14px; flex:1; min-width:130px;">
-  <div style="font-size:1.6em; text-align:center;">📼</div>
+  <div style="font-size:1.6em; text-align:center;"></div>
   <div style="color:#8e44ad; font-weight:700; text-align:center;">Secuencial</div>
   <hr style="border-color:#2a2a4a;"/>
   <p>Acceso en <strong>orden lineal</strong> estricto. Tiempo variable.</p>
@@ -613,7 +378,7 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 
 <div style="background:#0d1e30; border:2px solid #2980b9; border-radius:8px;
             padding:10px 14px; flex:1; min-width:130px;">
-  <div style="font-size:1.6em; text-align:center;">💿</div>
+  <div style="font-size:1.6em; text-align:center;"></div>
   <div style="color:#2980b9; font-weight:700; text-align:center;">Directo</div>
   <hr style="border-color:#1a3a5a;"/>
   <p>Cabezal va a <strong>vecindad</strong> y luego busca. Tiempo variable.</p>
@@ -622,7 +387,7 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 
 <div style="background:#0d1e30; border:2px solid #27ae60; border-radius:8px;
             padding:10px 14px; flex:1; min-width:130px;">
-  <div style="font-size:1.6em; text-align:center;">🧠</div>
+  <div style="font-size:1.6em; text-align:center;"></div>
   <div style="color:#27ae60; font-weight:700; text-align:center;">Aleatorio</div>
   <hr style="border-color:#1a3a5a;"/>
   <p>Cada dirección tiene mecanismo propio. Tiempo <strong>constante</strong>.</p>
@@ -631,7 +396,7 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 
 <div style="background:#0d1e30; border:2px solid #f0c040; border-radius:8px;
             padding:10px 14px; flex:1; min-width:130px;">
-  <div style="font-size:1.6em; text-align:center;">🔍</div>
+  <div style="font-size:1.6em; text-align:center;"></div>
   <div style="color:#f0c040; font-weight:700; text-align:center;">Asociativo</div>
   <hr style="border-color:#3a3a1a;"/>
   <p>Búsqueda por <strong>contenido</strong>, no por dirección. Tiempo constante.</p>
@@ -639,39 +404,19 @@ Preguntar al público: "¿La RAM es volátil o no volátil?"
 </div>
 
 </div>
-
-<div class="NOTES" id="org1f74ab7">
-<p>
-INTEGRANTE 2 — ~2 min
-Usar la analogía del archivero para cada tipo:
-</p>
-<ul class="org-ul">
-<li>Secuencial: "Como buscar en una cinta VHS — tienes que avanzar."</li>
-<li>Directo: "Como un tocadiscos — el brazo va al surco aproximado,
-luego gira el disco hasta encontrar exactamente lo que quieres."</li>
-<li>Aleatorio: "Como el escritorio de Bob — cada posición tiene su
-dirección exacta. 0 tiempo extra de posicionamiento."</li>
-<li>Asociativo: "¿Tienes la carpeta con el contrato de Empresa X?
-No sabes dónde está, pero la describes y el sistema la encuentra."</li>
-</ul>
-<p>
-Preguntar: "¿Qué método usa la RAM?" → Aleatorio.
-"¿Y la caché?" → Aleatorio o Asociativo.
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org1020ba0" class="outline-2">
-<h2 id="org1020ba0">Rendimiento: Acceso vs. Ciclo vs. Tasa de Transferencia</h2>
-<div class="outline-text-2" id="text-org1020ba0">
+</section>
+</section>
+<section>
+<section id="slide-org81dc66c" data-background="#0a0f1e">
+<h2 id="org81dc66c">Rendimiento: Acceso vs. Ciclo vs. Tasa de Transferencia</h2>
 <div class="col2">
 <div>
 
-<ul class="org-ul">
-<li>📏 <b>Tiempo de Acceso</b> (\(T_A\)): tiempo desde que se presenta la dirección hasta que el dato está disponible</li>
-<li>🔄 <b>Tiempo de Ciclo</b> (\(T_C\)): \(T_A\) + tiempo extra de recuperación. Es el mínimo tiempo entre dos accesos consecutivos (\(T_C \geq T_A\))</li>
-<li>📡 <b>Tasa de Transferencia</b> (\(R\)): para RAM \(= 1/T_C\) ; para no-RAM: \(T_n = T_A + n/R\)</li>
+<ul>
+<li class="fragment appear"><b>Tiempo de Acceso</b> (\(T_A\)): tiempo desde que se presenta la dirección hasta que el dato está disponible</li>
+<li class="fragment appear"><b>Tiempo de Ciclo</b> (\(T_C\)): \(T_A\) + tiempo extra de recuperación. Es el mínimo tiempo entre dos accesos consecutivos (\(T_C \geq T_A\))</li>
+<li class="fragment appear"><b>Tasa de Transferencia</b> (\(R\)): para RAM \(= 1/T_C\) ; para no-RAM: \(T_n = T_A + n/R\)</li>
+
 </ul>
 
 </div>
@@ -694,24 +439,11 @@ Preguntar: "¿Qué método usa la RAM?" → Aleatorio.
 
 </div>
 </div>
-
-<div class="NOTES" id="orgbde7626">
-<p>
-INTEGRANTE 2 — ~1.5 min
-Dar el ejemplo concreto: "Si la RAM tiene T<sub>A</sub> = 60 ns y necesita
-10 ns extra para regenerar, T<sub>C</sub> = 70 ns. Aunque el dato llegó en
-60 ns, no puedes hacer otro acceso hasta que pasen 70 ns."
-La fórmula de tasa de transferencia para no-RAM es importante:
-"Si transferimos n=128 bits, T<sub>A</sub> = 20 ms, R = 2 Mbps en una cinta:
-T<sub>128</sub> = 20ms + 128/(2×10<sup>6</sup>) = 20ms + 0.064ms"
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orgdfce08a" class="outline-2">
-<h2 id="orgdfce08a">La Pirámide de la Jerarquía de Memoria</h2>
-<div class="outline-text-2" id="text-orgdfce08a">
+</section>
+</section>
+<section>
+<section id="slide-org3595ef2" data-background="#0a0f1e">
+<h2 id="org3595ef2">La Pirámide de la Jerarquía de Memoria</h2>
 <p style="font-size:0.60em; color:#aaa; margin:0 0 6px;">
   Stallings, Fig. 4.6 p. 144 — Click para construir la jerarquía de abajo hacia arriba 🔽→🔼
 </p>
@@ -720,7 +452,7 @@ T<sub>128</sub> = 20ms + 128/(2×10<sup>6</sup>) = 20ms + 0.064ms"
 
   <!-- Registros — aparece ÚLTIMO (idx=7) -->
   <div class="fragment p-reg" data-fragment-index="7">
-    <span>⚡ Registros del CPU</span>
+    <span> Registros del CPU</span>
     <span class="right-info">~0.3 ns | bytes | Compilador</span>
   </div>
 
@@ -765,32 +497,11 @@ T<sub>128</sub> = 20ms + 128/(2×10<sup>6</sup>) = 20ms + 0.064ms"
   <span>↑ Mayor velocidad · Mayor costo/bit · Menor capacidad</span>
   <span>Mayor capacidad · Menor costo/bit · Mayor lentitud ↓</span>
 </div>
-
-<div class="NOTES" id="orgec54b36">
-<p>
-INTEGRANTE 2 — ~3 min  ← DIAPOSITIVA CENTRAL DE ESTA FASE
-DINÁMICA: Construir la pirámide interactuando con el público.
-ANTES de hacer clic, preguntar a la clase:
-  "¿Cuál es el nivel más lento y con más capacidad?"  → clic → Cinta
-  "¿Qué viene por encima?" → clic → Disco
-  "¿Y el almacenamiento más rápido que existe sin RAM?" → clic → SSD
-  "¿La memoria que ve directamente el programa?" → clic → RAM
-  "¿El primer nivel de caché?" → clic → L2/L3
-  "El más cercano al CPU&#x2026;" → clic → L1
-  "¡Lo más rápido de todo!" → clic → Registros
-Al final: "Cada nivel hacia arriba es ~10x más rápido y ~10x más
-caro por bit. La clave es que el S.O. y el hardware mueven los datos
-AUTOMÁTICAMENTE entre niveles según el principio de localidad."
-Mencionar IBM z13 (Stallings p. 148-149) como ejemplo real: tiene 4
-niveles de caché (L1=96kB, L2=2MB, L3=64MB, L4=480MB eDRAM).
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org6c52ac5" class="outline-2">
-<h2 id="org6c52ac5">Rendimiento de la Jerarquía: Hit Ratio</h2>
-<div class="outline-text-2" id="text-org6c52ac5">
+</section>
+</section>
+<section>
+<section id="slide-org75c31ad" data-background="#0a0f1e">
+<h2 id="org75c31ad">Rendimiento de la Jerarquía: Hit Ratio</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:8px;">
   Stallings, Ec. 4.2 p. 151 — ¿Cuándo vale la pena la jerarquía?
 </p>
@@ -812,36 +523,18 @@ T₁ = 0.01 µs (caché) &nbsp;&nbsp;|&nbsp;&nbsp; T₂ = 0.1 µs (RAM) &nbsp;&n
 T_s = 0.01 + (1 − 0.95) × 0.1
     = 0.01 + 0.005
     = <strong style="color:#a8e6cf;">0.015 µs</strong>
-    (mucho más cerca de 0.01 que de 0.1 ✅)
+    (mucho más cerca de 0.01 que de 0.1 )
 </div>
 
 <div class="concepto-box warn" style="margin-top:8px; font-size:0.68em;">
-  💡 Con H ≈ 0.9–0.95, el tiempo promedio es <strong>casi igual al
+   Con H ≈ 0.9–0.95, el tiempo promedio es <strong>casi igual al
   tiempo del nivel más rápido</strong>. Esto es lo que hace útil la caché.
 </div>
-
-<div class="NOTES" id="orgcd7a93a">
-<p>
-INTEGRANTE 2 — ~2 min
-Trabajar el ejemplo numérico en voz alta:
-"Si el 95% de los accesos los encontramos en caché (H=0.95),
-pagamos T1=0.01µs. El 5% restante lo pagamos con T1+T2=0.11µs.
-Promedio: 0.015µs. ¡Casi tan rápido como la caché pura!"
-Preguntar: "¿Qué pasaría si H=0.5? El sistema sería mucho más
-lento. Por eso necesitamos alta H."
-"¿Y cómo logramos alta H? Con el principio de localidad. Todo
-conecta."
-CIERRE FASE 2: "Ahora [Nombre 3] nos explica cómo funciona
-POR DENTRO la memoria caché."
-</p>
-
-</div>
-</div>
-</div>
-
-<div id="outline-container-org6f59634" class="outline-2">
-<h2 id="org6f59634">FASE 3</h2>
-<div class="outline-text-2" id="text-org6f59634">
+</section>
+</section>
+<section>
+<section id="slide-orge10cec8" data-background="linear-gradient(135deg, #001a0a, #003020)">
+<h2 id="orge10cec8">FASE 3</h2>
 <div class="fase-header">
   <div class="numero">3</div>
   <h2 style="color:#a8e6cf; margin:8px 0 4px;">
@@ -852,11 +545,11 @@ POR DENTRO la memoria caché."
   </p>
   <p class="integrante">Molina Jhanavi · Stallings Cap. 5, pp. 161–186</p>
 </div>
-</div>
-</div>
-<div id="outline-container-org4ef00ac" class="outline-2">
-<h2 id="org4ef00ac">¿Qué es la Memoria Caché?</h2>
-<div class="outline-text-2" id="text-org4ef00ac">
+</section>
+</section>
+<section>
+<section id="slide-org8ab8a96" data-background="#0a0f1e">
+<h2 id="org8ab8a96">¿Qué es la Memoria Caché?</h2>
 <div class="concepto-box" style="margin-bottom:12px;">
   <strong>Definición (Stallings, p. 161):</strong><br/>
   La caché está diseñada para combinar el tiempo de acceso de la
@@ -868,15 +561,16 @@ POR DENTRO la memoria caché."
 <div class="col2">
 <div>
 
-<p>
+<p class="fragment (appear appear appear appear)">
 <b>Terminología esencial:</b>
 </p>
-<ul class="org-ul">
+<ul>
 <li><b>Bloque</b> (Block): Grupo de datos que llega desde la RAM</li>
 <li><b>Línea</b> (Line): Espacio en caché que aloja un bloque + control</li>
 <li><b>Etiqueta</b> (Tag): Identifica qué bloque de RAM está en la línea</li>
 <li><b>Acierto / Fallo</b> (Hit / Miss): El Hit es el dato que si está en caché y Miss el dato
 que no está en caché</li>
+
 </ul>
 
 </div>
@@ -894,11 +588,11 @@ que no está en caché</li>
 
 </div>
 </div>
-</div>
-</div>
-<div id="outline-container-org923e582" class="outline-2">
-<h2 id="org923e582">Principios Básicos: Operación de Lectura</h2>
-<div class="outline-text-2" id="text-org923e582">
+</section>
+</section>
+<section>
+<section id="slide-orgec80e30" data-background="#0a0f1e">
+<h2 id="orgec80e30">Principios Básicos: Operación de Lectura</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:8px;">
   Stallings, Fig. 5.3 (p. 163) — Flujo de una lectura
 </p>
@@ -906,13 +600,14 @@ que no está en caché</li>
 <div style="font-size:0.62em; display:flex; gap:16px; align-items:flex-start;">
 <div style="flex:1; text-align:left;">
 
-<ol class="org-ol">
-<li>CPU genera una dirección de memoria</li>
-<li>¿Está el bloque que contiene <b>RA</b> en caché?</li>
-<li><b>SÍ → HIT:</b> entregar palabra a CPU directamente (~1 ns)</li>
-<li><b>NO → MISS:</b> acceder a memoria principal (~60 ns)</li>
-<li>Cargar el bloque completo en una línea de caché</li>
-<li>Entregar primero la palabra solicitada <b>Critical Word First</b></li>
+<ol>
+<li class="fragment appear">CPU genera una dirección de memoria</li>
+<li class="fragment appear">¿Está el bloque que contiene <b>RA</b> en caché?</li>
+<li class="fragment appear"><b>SÍ → HIT:</b> entregar palabra a CPU directamente (~1 ns)</li>
+<li class="fragment appear"><b>NO → MISS:</b> acceder a memoria principal (~60 ns)</li>
+<li class="fragment appear">Cargar el bloque completo en una línea de caché</li>
+<li class="fragment appear">Entregar primero la palabra solicitada <b>Critical Word First</b></li>
+
 </ol>
 
 </div>
@@ -926,18 +621,18 @@ que no está en caché</li>
 </div>
 
 <div class="concepto-box" style="font-size:0.75em; margin-top:8px;">
-  💡 <strong>Critical Word First</strong> (Stallings p. 164):<br/>
+   <strong>Critical Word First</strong> (Stallings p. 164):<br/>
   El hardware solicita primero la palabra faltante y la envía
   al CPU sin esperar que se cargue toda la línea.
 </div>
 
 </div>
 </div>
-</div>
-</div>
-<div id="outline-container-org652d7ee" class="outline-2">
-<h2 id="org652d7ee">Elementos de Diseño: Tamaño de la Caché</h2>
-<div class="outline-text-2" id="text-org652d7ee">
+</section>
+</section>
+<section>
+<section id="slide-org6fe4781" data-background="#0a0f1e" style="font-size: 85%;">
+<h2 id="org6fe4781">Elementos de Diseño: Tamaño de la Caché</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:8px;">
   Stallings p. 167 — El delicado equilibrio de capacidad [cite: 194]
 </p>
@@ -950,13 +645,14 @@ que no está en caché</li>
 <div class="col2">
 <div>
 
-<p>
+<p class="fragment (appear appear appear)">
 <b>¿Por qué no hacerla inmensa?</b>
 </p>
-<ul class="org-ul">
+<ul>
 <li><b>Lentitud por compuertas:</b> Mayor tamaño requiere más compuertas para el direccionamiento, las cachés muy grandes tienden a ser ligeramente más lentas.</li>
 <li><b>Límites físicos:</b> El área disponible en el chip y la placa base imponen un límite rígido.</li>
 <li><b>Dependencia de carga:</b> El rendimiento es muy sensible a la carga de trabajo ejecutada, no existe un tamaño "óptimo" universal.</li>
+
 </ul>
 
 </div>
@@ -981,11 +677,11 @@ que no está en caché</li>
 
 </div>
 </div>
-</div>
-</div>
-<div id="outline-container-org3a63bbf" class="outline-2">
-<h2 id="org3a63bbf">Función de Mapeo Directo</h2>
-<div class="outline-text-2" id="text-org3a63bbf">
+</section>
+</section>
+<section>
+<section id="slide-org52a3108" data-background="#0a0f1e">
+<h2 id="org52a3108">Función de Mapeo Directo</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:6px;">
   Stallings p. 168 — La técnica más simple
 </p>
@@ -1013,19 +709,20 @@ que no está en caché</li>
   </div>
 </div>
 
-<p>
+<p class="fragment (appear appear appear)">
 <b>Ventajas y desventajas:</b>
 </p>
-<ul class="org-ul">
+<ul>
 <li>Implementación <b>simple y económica</b></li>
 <li>Búsqueda <b>muy rápida</b> - una sola línea a verificar</li>
 <li><b>Thrashing</b>: dos bloques que mapean a la misma línea se expulsan mutuamente aunque haya espacio libre</li>
+
 </ul>
-</div>
-</div>
-<div id="outline-container-orgaf245bd" class="outline-2">
-<h2 id="orgaf245bd">Función de Mapeo Asociativo - Totalmente Asociativo</h2>
-<div class="outline-text-2" id="text-orgaf245bd">
+</section>
+</section>
+<section>
+<section id="slide-orge4a3638" data-background="#0a0f1e">
+<h2 id="orge4a3638">Función de Mapeo Asociativo - Totalmente Asociativo</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:6px;">
   Stallings p. 173 — Máxima flexibilidad, mayor costo
 </p>
@@ -1049,19 +746,20 @@ que no está en caché</li>
   </div>
 </div>
 
-<p>
+<p class="fragment (appear appear appear)">
 <b>Ventajas y desventajas:</b>
 </p>
-<ul class="org-ul">
+<ul>
 <li><b>Elimina el thrashing</b>: total libertad de colocación</li>
 <li>Mayor hit ratio con el mismo tamaño de caché</li>
 <li>Hardware caro y complejo* : se necesita CAM para búsqueda en paralelo</li>
+
 </ul>
-</div>
-</div>
-<div id="outline-container-org7ed89b8" class="outline-2">
-<h2 id="org7ed89b8">Función de Mapeo Asociativo por Conjuntos</h2>
-<div class="outline-text-2" id="text-org7ed89b8">
+</section>
+</section>
+<section>
+<section id="slide-orgd6451f1" data-background="#0a0f1e">
+<h2 id="orgd6451f1">Función de Mapeo Asociativo por Conjuntos</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:6px;">
   Stallings p. 176 — El compromiso óptimo · Más usado en la práctica
 </p>
@@ -1099,11 +797,11 @@ que no está en caché</li>
   (Stallings p. 180, Fig. 5.15)
 </div>
 </div>
-</div>
-</div>
-<div id="outline-container-orgaa82234" class="outline-2">
-<h2 id="orgaa82234">Las Tres Funciones de Mapeo</h2>
-<div class="outline-text-2" id="text-orgaa82234">
+</section>
+</section>
+<section>
+<section id="slide-org3c53163" data-background="#0a0f1e">
+<h2 id="org3c53163">Las Tres Funciones de Mapeo</h2>
 <table class="mapeo-table">
 <thead>
   <tr>
@@ -1152,12 +850,11 @@ que no está en caché</li>
   mínimo recomendado,<strong>4-way</strong> es el punto óptimo
   costo/beneficio para L1, L3 usa frecuentemente 16-way o más.
 </div>
-</div>
-</div>
-
-<div id="outline-container-org1e50291" class="outline-2">
-<h2 id="org1e50291">FASE 4</h2>
-<div class="outline-text-2" id="text-org1e50291">
+</section>
+</section>
+<section>
+<section id="slide-org58c0cf5" data-background="linear-gradient(135deg, #1a0000, #3d0000)">
+<h2 id="org58c0cf5">FASE 4</h2>
 <div class="fase-header">
   <div class="numero">4</div>
   <h2 style="color:#ff7675; margin:8px 0 4px;">
@@ -1168,20 +865,11 @@ que no está en caché</li>
   </p>
   <p class="integrante">Integrante 4 · Stallings Cap. 5, pp. 181–186</p>
 </div>
-
-<div class="NOTES" id="orgf90b80c">
-<p>
-INTEGRANTE 4 — PORTADA FASE 4 (10 s)
-Presentarse: "Voy a cubrir las últimas decisiones de diseño y
-luego los pongo a prueba con un ejercicio en tiempo real."
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org16a8027" class="outline-2">
-<h2 id="org16a8027">Algoritmos de Sustitución (Reemplazo)</h2>
-<div class="outline-text-2" id="text-org16a8027">
+</section>
+</section>
+<section>
+<section id="slide-org899ec24" data-background="#0a0f1e">
+<h2 id="org899ec24">Algoritmos de Sustitución (Reemplazo)</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:8px;">
   Stallings p. 181 — ¿Qué línea expulsamos cuando la caché está llena?
 </p>
@@ -1221,30 +909,11 @@ luego los pongo a prueba con un ejercicio en tiempo real."
 </div>
 
 </div>
-
-<div class="NOTES" id="orge6c97d2">
-<p>
-INTEGRANTE 4 — ~2 min
-Explicar cada algoritmo brevemente:
-LRU: "Razona: si no lo usé recientemente, probablemente no lo
-necesite. Para 2-way es trivial: 1 bit por línea."
-FIFO: "El primero en entrar es el primero en salir. Como una cola.
-La anomalía de Bélády es un fenómeno curioso: más caché puede dar
-PEOR hit ratio con FIFO (no con LRU)."
-LFU: "Cuenta referencias. Problema: una línea muy usada al inicio
-nunca se expulsa aunque ya no la uses."
-RAND: "¡Funciona sorprendentemente bien! Smith (1982) mostró que
-es solo ligeramente inferior a LRU. Y el hardware es trivial."
-Pregunta al público: "¿Cuál usarían para la L1 del CPU si
-el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orgb6d4805" class="outline-2">
-<h2 id="orgb6d4805">Política de Escritura: Write-Through vs. Write-Back</h2>
-<div class="outline-text-2" id="text-orgb6d4805">
+</section>
+</section>
+<section>
+<section id="slide-org7a21ac8" data-background="#0a0f1e">
+<h2 id="org7a21ac8">Política de Escritura: Write-Through vs. Write-Back</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:8px;">
   Stallings p. 182 — ¿Cuándo actualizamos la RAM?
 </p>
@@ -1258,10 +927,10 @@ el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
      Write-Through
   </div>
   <p>Cada escritura actualiza <strong>caché Y RAM simultáneamente</strong>.</p>
-  <p style="color:#00b894;">✅ RAM siempre válida</p>
-  <p style="color:#00b894;">✅ Coherencia simple entre cachés</p>
-  <p style="color:#d63031;">❌ Genera tráfico de bus constante</p>
-  <p style="color:#d63031;">❌ Posible cuello de botella</p>
+  <p style="color:#00b894;"> RAM siempre válida</p>
+  <p style="color:#00b894;"> Coherencia simple entre cachés</p>
+  <p style="color:#d63031;"> Genera tráfico de bus constante</p>
+  <p style="color:#d63031;"> Posible cuello de botella</p>
   <p style="color:#aaa; font-size:0.9em; margin-top:6px;">
     Usado en: IBM z13 L1 y L2 (Stallings p. 190)
   </p>
@@ -1277,10 +946,10 @@ el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
   </div>
   <p>Escribe <strong>solo en caché</strong>. Marca línea con
      <em>Dirty Bit</em>. Escribe a RAM solo al expulsar la línea.</p>
-  <p style="color:#00b894;">✅ Mínimo tráfico de bus</p>
-  <p style="color:#00b894;">✅ Mejor rendimiento general</p>
-  <p style="color:#d63031;">❌ RAM puede estar desactualizada</p>
-  <p style="color:#d63031;">❌ Coherencia compleja</p>
+  <p style="color:#00b894;"> Mínimo tráfico de bus</p>
+  <p style="color:#00b894;"> Mejor rendimiento general</p>
+  <p style="color:#d63031;"> RAM puede estar desactualizada</p>
+  <p style="color:#d63031;"> Coherencia compleja</p>
   <p style="color:#aaa; font-size:0.9em; margin-top:6px;">
     Usado en: IBM z13 L3 y L4 (Stallings p. 191)
   </p>
@@ -1296,30 +965,11 @@ el hardware debe ser ultrarrápido?" → LRU aproximado o RAND.
   Write-Through escribe cada vez que modifica. Si se modifica
   <strong>&gt; 8 veces</strong> antes de expulsar → Write-Back gana.
 </div>
-
-<div class="NOTES" id="orga4244a4">
-<p>
-INTEGRANTE 4 — ~2.5 min
-Usar la analogía del cuaderno de borrador (caché) vs. el libro
-oficial (RAM):
-"Write-Through: cada vez que escribes algo en tu borrador,
-inmediatamente copias exactamente lo mismo al libro oficial.
-El libro SIEMPRE está al día."
-"Write-Back: escribes en el borrador con un post-it de 'sucio'.
-Solo pasas al libro oficial cuando necesitas ese espacio del borrador."
-El ejemplo numérico: "Si la línea se escribe solo 1 vez antes de
-expulsarse, Write-Back = 240 ns, Write-Through = 30 ns → WT gana.
-Si se escribe 9 veces: WB = 240 ns, WT = 270 ns → WB gana."
-Mencionar IBM z13: L1 y L2 usan WT (porque tienen alta velocidad
-hacia L3), L3 y L4 usan WB (tráfico hacia RAM más costoso).
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orgee29867" class="outline-2">
-<h2 id="orgee29867">Tamaño de Línea y Número de Cachés</h2>
-<div class="outline-text-2" id="text-orgee29867">
+</section>
+</section>
+<section>
+<section id="slide-orga751323" data-background="#0a0f1e">
+<h2 id="orga751323">Tamaño de Línea y Número de Cachés</h2>
 <div class="col2">
 <div>
 
@@ -1332,9 +982,10 @@ hacia L3), L3 y L4 usan WB (tráfico hacia RAM más costoso).
   <strong>8–64 bytes</strong> (HPC: 64–128 bytes).
 </div>
 
-<ul class="org-ul">
-<li>🔼 Línea <b>grande</b>: más datos útiles por miss, menos líneas totales</li>
-<li>🔽 Línea <b>pequeña</b>: menos desperdicio, más líneas disponibles</li>
+<ul>
+<li class="fragment appear">Línea <b>grande</b>: más datos útiles por miss, menos líneas totales</li>
+<li class="fragment appear">Línea <b>pequeña</b>: menos desperdicio, más líneas disponibles</li>
+
 </ul>
 
 </div>
@@ -1348,9 +999,10 @@ hacia L3), L3 y L4 usan WB (tráfico hacia RAM más costoso).
   <strong>Caché Dividida (Split)</strong>
 </div>
 
-<ul class="org-ul">
-<li><b>Unificada</b>: instrucciones + datos juntos. Mejor hit ratio adaptativo</li>
-<li><b>Dividida</b> (Harvard-style): caché de instrucciones (I-cache) + datos (D-cache). Evita contención con pipelining → <b>estándar en L1 moderno</b></li>
+<ul>
+<li class="fragment appear"><b>Unificada</b>: instrucciones + datos juntos. Mejor hit ratio adaptativo</li>
+<li class="fragment appear"><b>Dividida</b> (Harvard-style): caché de instrucciones (I-cache) + datos (D-cache). Evita contención con pipelining → <b>estándar en L1 moderno</b></li>
+
 </ul>
 
 <div class="concepto-box" style="font-size:0.62em; margin-top:6px;">
@@ -1363,27 +1015,11 @@ hacia L3), L3 y L4 usan WB (tráfico hacia RAM más costoso).
 
 </div>
 </div>
-
-<div class="NOTES" id="org59c7071">
-<p>
-INTEGRANTE 4 — ~2 min
-Tamaño de línea: "Si la línea es muy pequeña, el principio de
-localidad espacial no se aprovecha. Si es muy grande, trae datos
-que nunca usarás y cada miss tarda más. 64 bytes es el estándar
-en Intel y AMD modernos."
-Split cache: "La razón es el pipeline. Cuando el CPU está ejecutando
-instrucción N y al mismo tiempo precarga instrucción N+1, necesita
-acceder a la I-cache. Si hay una sola caché y la instrucción N
-también lee datos en ese ciclo, hay CONTENCIÓN. Con cachés separadas,
-instrucciones y datos no compiten."
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org509f197" class="outline-2">
-<h2 id="org509f197">El Reto Final</h2>
-<div class="outline-text-2" id="text-org509f197">
+</section>
+</section>
+<section>
+<section id="slide-orgb2772ba" data-background="#1a0505" style="font-size: 85%;">
+<h2 id="orgb2772ba">El Reto Final</h2>
 <div class="reto-header">
   <p style="color:#fff; font-size:0.75em; margin:0 0 6px;">
     EJERCICIO PRÁCTICO EN VIVO — Algoritmo FIFO
@@ -1394,27 +1030,29 @@ instrucciones y datos no compiten."
 <div class="col2" style="margin-top:12px;">
 <div>
 
-<p>
+<p class="fragment appear">
 <b>Parámetros del sistema:</b>
 </p>
 
-<ul class="org-ul">
-<li>Caché con <b>3 marcos</b> (bloques) inicialmente vacía</li>
-<li>Algoritmo de sustitución: <b>FIFO</b></li>
-<li>Secuencia de referencias: <b>1 → 2 → 3 → 1 → 4 → 1 → 2</b></li>
+<ul>
+<li class="fragment appear">Caché con <b>3 marcos</b> (bloques) inicialmente vacía</li>
+<li class="fragment appear">Algoritmo de sustitución: <b>FIFO</b></li>
+<li class="fragment appear">Secuencia de referencias: <b>1 → 2 → 3 → 1 → 4 → 1 → 2</b></li>
+
 </ul>
 
 </div>
 <div>
 
-<p>
+<p class="fragment appear">
 <b>¿Qué debes determinar?</b>
 </p>
 
-<ul class="org-ul">
-<li>Para cada referencia: ¿es <b>ACIERTO</b> (✓) o <b>FALLO</b> (✗)?</li>
-<li>Estado de la caché <b>tras cada referencia</b></li>
-<li>¿Qué bloque se expulsa en cada FALLO?</li>
+<ul>
+<li class="fragment appear">Para cada referencia: ¿es <b>ACIERTO</b> (✓) o <b>FALLO</b> (✗)?</li>
+<li class="fragment appear">Estado de la caché <b>tras cada referencia</b></li>
+<li class="fragment appear">¿Qué bloque se expulsa en cada FALLO?</li>
+
 </ul>
 
 </div>
@@ -1427,27 +1065,11 @@ instrucciones y datos no compiten."
   Tienen <strong style="color:#f0c040;">3 minutos</strong> para resolverlo.
   La solución aparece en la siguiente diapositiva.
 </div>
-
-<div class="NOTES" id="orgdc71063">
-<p>
-INTEGRANTE 4 — ~1 min de explicación + 3 min que resuelve la clase
-Leer los parámetros claramente y asegurarse de que todos entendieron:
-"3 marcos = 3 espacios en caché. Empieza vacía. FIFO significa:
-cuando necesito expulsar, saco el que entró PRIMERO."
-"¿Alguien recuerda FIFO de Sistemas Operativos?"
-Iniciar timer visible (usar el teléfono o timer online).
-Caminar por la clase, ayudar si alguien está perdido pero NO dar
-la respuesta. Estimular discusión entre pares.
-Al finalizar los 3 minutos: "¿Cuántos tuvieron más de 2 aciertos?
-¿Alguien llegó a 3?" → luego avanzar a la solución.
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orgdd47d71" class="outline-2">
-<h2 id="orgdd47d71">Solución del Reto — FIFO con 3 Marcos</h2>
-<div class="outline-text-2" id="text-orgdd47d71">
+</section>
+</section>
+<section>
+<section id="slide-org9662ab8" data-background="#0a0f1e">
+<h2 id="org9662ab8">Solución del Reto — FIFO con 3 Marcos</h2>
 <p style="font-size:0.60em; color:#aaa; margin-bottom:6px;">
   Secuencia: 1 → 2 → 3 → 1 → 4 → 1 → 2 &nbsp;|&nbsp;
   Caché: 3 marcos vacíos &nbsp;|&nbsp; Algoritmo: FIFO
@@ -1544,42 +1166,22 @@ Al finalizar los 3 minutos: "¿Cuántos tuvieron más de 2 aciertos?
     por ser reciente → posiblemente mejor hit ratio.
   </div>
 </div>
-
-<div class="NOTES" id="org1716b13">
-<p>
-INTEGRANTE 4 — ~3 min
-Revelar la tabla fila por fila, explicando cada decisión:
-Ref 1: "Fallo — caché vacía, cargamos 1. Cola FIFO: [1]"
-Ref 2: "Fallo — aún hay espacio, cargamos 2. Cola: [1,2]"
-Ref 3: "Fallo — último espacio, cargamos 3. Cola: [1,2,3]"
-Ref 1: "ACIERTO — 1 ya está en caché. Cola sin cambio: [1,2,3]"
-Ref 4: "Fallo — caché llena. FIFO expulsa al PRIMERO EN ENTRAR:
-  el bloque 1 (entró primero). Cola: [2,3,4]. ¡Pero ahora si
-  necesitamos el 1 de nuevo, habrá fallo!"
-Ref 1: "Fallo — 1 fue expulsado. Cargamos 1, expulsamos 2."
-Ref 2: "Fallo — 2 fue expulsado. Cargamos 2, expulsamos 3."
-Resaltar la paradoja: "El bloque 1 que acabábamos de usar en el
-paso 4 fue expulsado en el paso 5. LRU habría expulsado a 3
-(el menos recientemente usado) y el paso 6 habría sido acierto."
-Preguntar: "¿Ven por qué LRU generalmente supera a FIFO?"
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org36ee992" class="outline-2">
-<h2 id="org36ee992">Conclusiones</h2>
-<div class="outline-text-2" id="text-org36ee992">
+</section>
+</section>
+<section>
+<section id="slide-org4c038ee" data-background="#0a0f1e">
+<h2 id="org4c038ee">Conclusiones</h2>
 <p style="font-size:0.65em; color:#aaa; margin-bottom:8px;">
   Lo esencial que llevas de esta clase
 </p>
 
-<ol class="org-ol">
-<li>El <b>Principio de Localidad</b> (temporal y espacial) hace posible toda la jerarquía de memoria</li>
-<li>La jerarquía balancea <b>velocidad, costo y capacidad</b> — sin ella el CPU esperaría casi todo el tiempo</li>
-<li>La caché es transparente al programador pero crítica para el rendimiento — su diseño determina el <b>hit ratio</b></li>
-<li><b>Asociativo por conjuntos</b> es el mejor compromiso: casi tan flexible como el asociativo puro, casi tan simple como el directo</li>
-<li><b>Write-back</b> minimiza tráfico de bus; <b>Write-through</b> maximiza coherencia. Los diseñadores modernos usan ambos en distintos niveles</li>
+<ol>
+<li class="fragment appear">El <b>Principio de Localidad</b> (temporal y espacial) hace posible toda la jerarquía de memoria</li>
+<li class="fragment appear">La jerarquía balancea <b>velocidad, costo y capacidad</b> — sin ella el CPU esperaría casi todo el tiempo</li>
+<li class="fragment appear">La caché es transparente al programador pero crítica para el rendimiento — su diseño determina el <b>hit ratio</b></li>
+<li class="fragment appear"><b>Asociativo por conjuntos</b> es el mejor compromiso: casi tan flexible como el asociativo puro, casi tan simple como el directo</li>
+<li class="fragment appear"><b>Write-back</b> minimiza tráfico de bus; <b>Write-through</b> maximiza coherencia. Los diseñadores modernos usan ambos en distintos niveles</li>
+
 </ol>
 
 <div style="text-align:center; margin-top:10px; font-size:0.65em;
@@ -1588,25 +1190,11 @@ Preguntar: "¿Ven por qué LRU generalmente supera a FIFO?"
   and that invisibility is the point."
   <span style="color:#888;"> — Stallings, Cap. 5</span>
 </div>
-
-<div class="NOTES" id="orgb729d7a">
-<p>
-CUALQUIER INTEGRANTE puede cerrar — se recomienda el Integrante 1 o 4.
-Leer cada conclusión y conectarla con lo visto:
-1 → "Localidad: base de todo. Sin ella, el caché no sirve."
-2 → "La pirámide: velocidad ↑ = costo ↑ = capacidad ↓."
-3 → "La caché no la ves en C++, pero afecta tu código enormemente."
-4 → "Los chips de hoy: 4-way, 8-way, 16-way según el nivel."
-5 → "IBM z13: WT en L1/L2 por velocidad; WB en L3/L4 por eficiencia."
-Invitar preguntas.
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orga557e34" class="outline-2">
-<h2 id="orga557e34">Referencias</h2>
-<div class="outline-text-2" id="text-orga557e34">
+</section>
+</section>
+<section>
+<section id="slide-org2dba42e" data-background="#0a0f1e" style="font-size: 85%;">
+<h2 id="org2dba42e">Referencias</h2>
 <div style="text-align:left; font-size:0.62em; line-height:2.0;
             background:#0d1e30; border-radius:10px; padding:16px 24px;">
 <p>
@@ -1645,23 +1233,44 @@ Invitar preguntas.
     + reveal.js 4.5 · Modo Orador: presiona <kbd>S</kbd>
   </p>
 </div>
+</section>
+</section>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/zoom/zoom.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/search/search.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
 
-<div class="NOTES" id="org32b63dd">
-<p>
-Agradecer al público. Abrir espacio para preguntas.
-Si queda tiempo, invitar a explorar los simuladores interactivos
-referenciados en el libro (Stallings hace referencia a simuladores
-en línea para Cache Mapping y FIFO/LRU).
-</p>
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+overview: true,
 
-</div>
-</div>
-</div>
-</div>
-<div id="postamble" class="status">
-<p class="date">Date: Junio 2026</p>
-<p class="author">Author: Grupo 3 — Arquitectura de Computadores</p>
-<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
-</div>
+transition: 'convex',
+transitionSpeed: 'default@',
+
+// Plugins with reveal.js 4.x and later
+plugins: [ RevealHighlight, RevealNotes, RevealZoom, RevealSearch ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
 </body>
 </html>
